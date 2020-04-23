@@ -34,9 +34,18 @@ public class Site {
 		return completedTransactions;
 	}
 
-	
+	@SuppressWarnings("unchecked")
 	public void readTransactions(LocalDate startDate, LocalDate endDate) {
-		
+		do {
+			try (ObjectInputStream ois = new ObjectInputStream(
+					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
+						((List<Transaction>) ois.readObject())
+							.forEach((o) -> { completedTransactions.add(o); });
+			} catch (IOException | ClassNotFoundException ioe) {
+				System.out.println("Sorry, could read from file.");
+			}
+			startDate = startDate.plusDays(1);
+		} while (!startDate.equals(endDate));
 	}
-	
+
 }
