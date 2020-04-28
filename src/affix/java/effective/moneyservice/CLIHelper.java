@@ -24,7 +24,7 @@ public class CLIHelper {
 	 * Main method for user to enter values.
 	 * 
 	 */
-	public static int menuInput() {
+	static int menuInput() {
 		Set<String> sites;
 		Optional<LocalDate> startDay;
 		Optional<Period> periodOption;
@@ -67,22 +67,31 @@ public class CLIHelper {
 	private static Set<String> readSites() {
 		System.out.println("Choose a Site (For multiple choices use comma seperation)");
 
+		// Create TreeSet for all Sites and 'ALL' option.
 		Set<String> sites = new TreeSet<String>();
 		sites.addAll(HQApp.sites.keySet());
 
+		// Print the options.
 		int i = 0;
 		for (String name : sites) {
 			System.out.println(String.format("%d: %s", ++i, name));
 		}
 		System.out.println(String.format("%d: %s", ++i, "ALL"));
 
+		// Create a new Array, which will be used to fetch
+		// site corresponding to it's position/index.
 		String[] siteArray = new String[sites.size()];
 		sites.toArray(siteArray);
 
+		// The TreeList where the selected sites
+		// should be appended to.
 		Set<String> result = new TreeSet<>();
 
 		for (String data : input.next().split(",")) {
 			int index = Integer.parseInt(data.trim());
+			// if i == index, then the 'ALL' option is selected.
+			// All sites should then be returned, else append selected
+			// site to the result TreeSet.
 			if (i == index)
 				return sites;
 
@@ -123,13 +132,13 @@ public class CLIHelper {
 		int i = 0;
 		System.out.println("Choose a Period");
 		for (Period p : Period.values()) {
-			System.out.println(String.format("%d: %s", i++, p));
+			System.out.println(String.format("%d: %s", ++i, p));
 		}
 
 		System.out.print("Enter your choice:");
 		int data = input.nextInt();
 		try {
-			return Optional.of(Period.values()[data]);
+			return Optional.of(Period.values()[data - 1]);
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Wrong input.");
 			return null;
