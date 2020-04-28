@@ -18,6 +18,9 @@ public class Site {
 	 * @param completedTransactions
 	 */
 	public Site(String siteName) {
+		if(siteName == null || siteName.isEmpty()) {
+			throw new IllegalArgumentException("siteName missing!");
+		}
 		this.siteName = siteName;
 	}
 
@@ -44,8 +47,10 @@ public class Site {
 					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
-			} catch (IOException | ClassNotFoundException ioe) {
-				System.out.println("Sorry, could read from file.");
+			} catch (IOException ioe) {
+				System.out.format("No report for %s\n", startDate);
+			} catch (ClassNotFoundException ioe) {
+				System.out.println("Reading error, class missmatch");
 			}
 			startDate = startDate.plusDays(1);
 		} while (!startDate.equals(endDate));

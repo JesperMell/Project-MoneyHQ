@@ -86,20 +86,38 @@ public class TestJUnitStatistic {
 
 	@SuppressWarnings("unused")
 	@Test (expected = IllegalArgumentException.class)
-	public void testConstructorEmptyTransList() {
+	public void testConstructorEmptyTransList1() {
 
 		List<Transaction> testEmptyList = new ArrayList<>();
 		ArrayList<String> currencyList = new ArrayList<String>(HQApp.currencyMap.keySet());
 		Statistic testStats = new Statistic(testEmptyList, currencyList, "TestSite");
 	}
+	
+	@SuppressWarnings("unused")
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorEmptyTransList2() {
+
+		List<Transaction> testEmptyList = new ArrayList<>();
+		ArrayList<String> currencyList = new ArrayList<String>(HQApp.currencyMap.keySet());
+		Statistic testStats = new Statistic(null, currencyList, "TestSite");
+	}
 
 	@SuppressWarnings("unused")
 	@Test (expected = IllegalArgumentException.class)
-	public void testConstructorEmptyCurrencyList() {
+	public void testConstructorEmptyCurrencyList1() {
 
 		List<Transaction> testEmptyList = new ArrayList<>();
 		ArrayList<String> currencyList = new ArrayList<>();
 		Statistic testStats = new Statistic(testTransactionList, currencyList, "TestSite");
+	}
+	
+	@SuppressWarnings("unused")
+	@Test (expected = IllegalArgumentException.class)
+	public void testConstructorEmptyCurrencyList2() {
+
+		List<Transaction> testEmptyList = new ArrayList<>();
+		ArrayList<String> currencyList = new ArrayList<>();
+		Statistic testStats = new Statistic(testTransactionList, null, "TestSite");
 	}
 
 	@SuppressWarnings("unused")

@@ -19,7 +19,7 @@ public class TestJUnitSite {
 	@SuppressWarnings("unused")
 	@Test (expected = IllegalArgumentException.class)
 	public void testContstructor_2() {
-		Site s1 = new Site("TestName");
+		Site s1 = new Site("");
 	}
 	
 	@Test
