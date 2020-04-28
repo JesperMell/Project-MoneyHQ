@@ -113,15 +113,21 @@ public class Statistic {
 		
 		return resultMap;
 	}	
-
+	
+	/**
+	 * Method for calculating number of completed transactions done of each currency
+	 * @param none
+	 * @return Map holding the result of calculation
+	 */
 	public Map<String, Integer> getTotalTransactions() {
 		Map<String, Integer> resultMap = new HashMap<>();
-
+		
+		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
 			long count = transactions.stream()
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))
-					.count();
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
+					.count(); 													// Calculate the number of transactions in filtered currency
 
 			Integer result = Math.toIntExact(count);
 
@@ -131,60 +137,75 @@ public class Statistic {
 	}
 
 
+	/**
+	 * Method for calculating the difference of between sold and bought amount 
+	 * in each currency
+	 * @param none
+	 * @return Map holding the result of calculation in each currency
+	 */
 	public Map<String, Integer> getDiffCurrency() {
 		Map<String, Integer> resultMap = new HashMap<>();
 		int difference = 0;
+		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
-
+			
 			Integer buyAmount = transactions.stream()
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))
-					.filter(t -> t.getMode().equals(TransactionMode.BUY))
-					.map(t -> t.getAmount())
-					.reduce(0, Integer::sum);
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.BUY)) 		// Filter on TransactionMode.BUY
+					.map(t -> t.getAmount()) 									// Get the amount in the transaction
+					.reduce(0, Integer::sum);									// Sum up the amount into total buyAmount
 
 			Integer sellAmount = transactions.stream()
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))
-					.filter(t -> t.getMode().equals(TransactionMode.SELL))
-					.map(t -> t.getAmount())
-					.reduce(0, Integer::sum);
-
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.SELL))		// Filter on TransactionMode.SELL
+					.map(t -> t.getAmount())									// Get the amount in the transaction
+					.reduce(0, Integer::sum);									// Sum up the amount into total sellAmount
+			
+			// Calculate the difference in bought amount and sold amount
 			difference = buyAmount - sellAmount;
 			resultMap.putIfAbsent(code, difference);
 		}
 		return resultMap;
 	}
 
+	/**
+	 * Method for calculating the profit in the reference currency for each currency per day
+	 * Reading the exchange rates from file based on date.
+	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @return Map holding the result of calculation with profit in each currency per day in List<Transaction>
+	 */
 	public Map<String, Integer> getProfit(String filteredDate) {
 
+		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
-
+		
+		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
-
+			
+			// Convert BUY transactions into reference currency and sum them up
 			Integer sumBuyAmount = transactions.stream()
-					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))
-					.filter(t -> t.getMode().equals(TransactionMode.BUY))
-					.map(t -> t.getAmount())
-					.reduce(0, Integer::sum);
+					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
+					.filter(t -> t.getMode().equals(TransactionMode.BUY))												// Filter on TransactionMode
+					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
+					.reduce(0, Integer::sum);																			// Sum up the amount into total bought in reference currency
 
 			Integer sumSellAmount = transactions.stream()
-					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))
-					.filter(t -> t.getMode().equals(TransactionMode.SELL))
-					.map(t -> t.getAmount())
-					.reduce(0, Integer::sum);
-
-			Double valueInventory = (sumBuyAmount - sumSellAmount) * temp.getExchangeRate();
-			Double sumOutInSEK = sumBuyAmount * (temp.getExchangeRate()* 0.995);
-			Double sumInInSEK = sumSellAmount * (temp.getExchangeRate()*1.005);
-
-			int profit = (int) Math.round((sumInInSEK - (sumOutInSEK)) + (valueInventory));
-
+					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
+					.filter(t -> t.getMode().equals(TransactionMode.SELL))												// Filter on TransactionMode
+					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
+					.reduce(0, Integer::sum);																			// Sum up the amount into total sold in reference currency
+			
+			// Calculate the total profit from the sold amount and the bought amount based on profit margin
+			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * HQApp.PROFIT_EXCHANGE_RATE));
+			
 			resultMap.putIfAbsent(code, profit);
 		}
 		return resultMap;
