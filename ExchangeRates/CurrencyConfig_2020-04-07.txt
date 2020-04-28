@@ -10,4 +10,3 @@ Period      	Grupp				Serie	   	Värde
 2020-04-07; 	Valutor mot svenska kronor;	100 NOK;	97.5849				
 2020-04-07; 	Valutor mot svenska kronor;	100 RUB;	13.258				
 2020-04-07; 	Valutor mot svenska kronor;	1 USD;		10.0169
-	
