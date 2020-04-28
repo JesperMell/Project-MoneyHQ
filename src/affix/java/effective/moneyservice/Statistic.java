@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Statistic {
 
@@ -111,19 +109,27 @@ public class Statistic {
 	 */
 	public Map<String, Integer> getTotalBuy(String filteredDate) {
 
+		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
-		Map<String, Integer> hm = new HashMap<String, Integer>();
+		Map<String, Integer> resultMap = new HashMap<>();
 
-		for(Transaction transaction : transactions) {
-			if (transaction.getMode().equals(TransactionMode.BUY))
-				hm.put( transaction.getCurrencyCode(), 
-						(int) Math.round((double) transaction.getAmount() * BUY_RATE * HQApp.currencyMap.get(transaction.getCurrencyCode()).getExchangeRate()) );
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+
+			String code = iter.next();
+			// Get the value from the currencyMap in current currency code
+			Currency temp = HQApp.currencyMap.get(code);
+
+			// Convert BUY transactions into reference currency and sum them up
+			Integer sumBuyAmount = transactions.stream()
+					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
+					.filter(t -> t.getMode().equals(TransactionMode.BUY))												// Filter on TransactionMode
+					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate() * BUY_RATE))						// Convert transaction into reference currency and add profit exchange rate
+					.reduce(0, Integer::sum);
+			
+			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
-
-		Set<Map.Entry<String, Integer>> eset = hm.entrySet();
-
-		Map<String, Integer> resultMap = eset.stream().collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
-
 		return resultMap;
 	}
 
@@ -134,19 +140,27 @@ public class Statistic {
 	 */
 	public Map<String, Integer> getTotalSell(String filteredDate) {
 
+		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
-		Map<String, Integer> hm = new HashMap<String, Integer>();
+		Map<String, Integer> resultMap = new HashMap<>();
 
-		for(Transaction transaction : transactions) {
-			if (transaction.getMode().equals(TransactionMode.SELL))
-				hm.put( transaction.getCurrencyCode(), 
-						(int) Math.round((double) transaction.getAmount() * SELL_RATE * HQApp.currencyMap.get(transaction.getCurrencyCode()).getExchangeRate()) );
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+
+			String code = iter.next();
+			// Get the value from the currencyMap in current currency code
+			Currency temp = HQApp.currencyMap.get(code);
+
+			// Convert BUY transactions into reference currency and sum them up
+			Integer sumBuyAmount = transactions.stream()
+					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
+					.filter(t -> t.getMode().equals(TransactionMode.SELL))												// Filter on TransactionMode
+					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate() * SELL_RATE))						// Convert transaction into reference currency and add profit exchange rate
+					.reduce(0, Integer::sum);
+			
+			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
-
-		Set<Map.Entry<String, Integer>> eset = hm.entrySet();
-
-		Map<String, Integer> resultMap = eset.stream().collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
-
 		return resultMap;
 	}	
 
