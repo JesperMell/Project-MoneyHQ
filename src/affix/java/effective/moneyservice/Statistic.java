@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class Statistic {
 
 
-	private static final double BUY_RATE = 1.005;
-	private static final double SELL_RATE = 0.995;
+	private static final double BUY_RATE = 0.995;
+	private static final double SELL_RATE = 1.005;
 	
 	private List<Transaction> transactions = new ArrayList<>();
 	private List<String> currencyCodes = new ArrayList<>();
