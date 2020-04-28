@@ -2,10 +2,13 @@ package affix.java.effective.moneyservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IntSummaryStatistics;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class Statistic {
 
@@ -24,36 +27,90 @@ public class Statistic {
 		this.currencyCodes = currencyCodes;
 		this.siteName = siteName;
 	}
-	
-	
-
-	/**
-	 * @return the transactions
-	 */
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-
-
-	/**
+  
+  /**
 	 * @return the currencyCodes
 	 */
 	public List<String> getCurrencyCodes() {
 		return currencyCodes;
 	}
-
-
-
-	/**
+  
+  /**
+	 * @return the transactions
+	 */
+	public List<Transaction> getTransactions() {
+		return transactions;
+  }
+  
+  /**
 	 * @return the siteName
 	 */
 	public String getSiteName() {
 		return siteName;
 	}
+	
+	/**
+	 * Get the total amount for each currency in the chosen reference currency
+	 * @param filteredDate
+	 * @return a map with an amount for each currency in reference currency
+	 */
+	public Map<String, Integer> getTotalAmount(String filteredDate) {
+		
+		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
+		Map<String, Integer> hm = new HashMap<String, Integer>();
+				
+		for(Transaction transaction : transactions) {
+			hm.put( transaction.getCurrencyCode(), (int) Math.round((double) transaction.getAmount() / HQApp.currencyMap.get(transaction.getCurrencyCode()).getExchangeRate()) );
+		}
+		
+		Set<Map.Entry<String, Integer>> eset = hm.entrySet();
+		
+		Map<String, Integer> resultMap = eset.stream().collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
+		
+		return resultMap;
+	}
 
+	/**
+	 * The same as method "getTotalAmount" filtered for only BUY-transactions
+	 * @param filteredDate
+	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
+	 */
+	public Map<String, Integer> getTotalBuy(String filteredDate) {
 
+		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
+		Map<String, Integer> hm = new HashMap<String, Integer>();
+				
+		for(Transaction transaction : transactions) {
+			if (transaction.getMode().equals(TransactionMode.BUY))
+			hm.put( transaction.getCurrencyCode(), (int) Math.round((double) transaction.getAmount() / HQApp.currencyMap.get(transaction.getCurrencyCode()).getExchangeRate()) );
+		}
+		
+		Set<Map.Entry<String, Integer>> eset = hm.entrySet();
+		
+		Map<String, Integer> resultMap = eset.stream().collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
+		
+		return resultMap;
+	}
 
+	/**
+	 * The same as method "getTotalAmount" filtered for only SELL-transactions
+	 * @param filteredDate
+	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
+	 */
+	public Map<String, Integer> getTotalSell(String filteredDate) {
+
+		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
+		Map<String, Integer> hm = new HashMap<String, Integer>();
+				
+		for(Transaction transaction : transactions) {
+			if (transaction.getMode().equals(TransactionMode.SELL))
+			hm.put( transaction.getCurrencyCode(), (int) Math.round((double) transaction.getAmount() / HQApp.currencyMap.get(transaction.getCurrencyCode()).getExchangeRate()) );
+		}
+		
+		Set<Map.Entry<String, Integer>> eset = hm.entrySet();
+		
+		Map<String, Integer> resultMap = eset.stream().collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)));
+	
 	public Map<String, Integer> getTotalTransactions() {
 		Map<String, Integer> resultMap = new HashMap<>();
 		
@@ -70,14 +127,7 @@ public class Statistic {
 		return resultMap;
 	}
 
-	//	public Map<String, Integer> getAverageAmount() {
-	//		
-	//	}
-	//	
-	//	public Map<String, Integer> getTotalAmount() {
-	//		
-	//	}
-	//	
+
 		public Map<String, Integer> getDiffCurrency() {
 			Map<String, Integer> resultMap = new HashMap<>();
 			int difference = 0;
@@ -101,29 +151,6 @@ public class Statistic {
 			}
 			return resultMap;
 		}
-	//	
-	//	public Map<String, Integer> getTotalBuy() {
-	//		
-	//	}
-	//	
-	//	public Map<String, Integer> getTotalSell() {
-	//		
-	//	}
-	//	
-		
-//		private Map<String, Currency> updateCurrencyMap() {
-//			Map<String, Currency> newCurrencyMap = new HashMap<>();
-//			String filename = null;
-//			
-//			LocalDate date = transactions.stream()
-//					.
-//			
-//			
-//			newCurrencyMap = HQApp.readCurrencyConfigFile(filename);
-//			
-//			
-//			return newCurrencyMap;
-//		}
 		
 		public Map<String, Integer> getProfit(String filteredDate) {
 			
@@ -164,5 +191,8 @@ public class Statistic {
 	//	public Map<String, Integer> getTransactionCountPerCurrency() {
 	//		
 	//	}
-
+    
+	//	public Map<String, Integer> getAverageAmount() {
+	//		
+	//	}
 }
