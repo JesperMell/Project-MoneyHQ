@@ -151,6 +151,54 @@ public class Statistic {
 
 
 	/**
+	 * Method for calculating number of completed buy transactions done of each currency
+	 * @param none
+	 * @return Map holding the result of calculation
+	 */
+	public Map<String, Integer> getTotalTransactionsBuy() {
+		Map<String, Integer> resultMap = new HashMap<>();
+		
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+			String code = iter.next();
+			long count = transactions.stream()
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.BUY))       // Filter on TransactionMode.BUY
+					.count(); 													// Calculate the number of transactions in filtered currency
+
+			Integer result = Math.toIntExact(count);
+
+			resultMap.putIfAbsent(code, result);
+		}
+		return resultMap;
+	}
+
+
+	/**
+	 * Method for calculating number of completed sell transactions done of each currency
+	 * @param none
+	 * @return Map holding the result of calculation
+	 */
+	public Map<String, Integer> getTotalTransactionsSell() {
+		Map<String, Integer> resultMap = new HashMap<>();
+		
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+			String code = iter.next();
+			long count = transactions.stream()
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.SELL))       // Filter on TransactionMode.SELL
+					.count(); 													// Calculate the number of transactions in filtered currency
+
+			Integer result = Math.toIntExact(count);
+
+			resultMap.putIfAbsent(code, result);
+		}
+		return resultMap;
+	}
+
+	
+	/**
 	 * Method for calculating the difference of between sold and bought amount 
 	 * in each currency
 	 * @param none
@@ -229,7 +277,9 @@ public class Statistic {
 	//		
 	//	}
 
-	//	public Map<String, Integer> getAverageAmount() {
-	//		
-	//	}
+//		public Map<String, Integer> getAverageAmount() {
+//			
+//			Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
+//			Map<String, Integer> hmNo = getTotalTransactions();
+//		}
 }
