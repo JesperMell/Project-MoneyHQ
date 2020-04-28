@@ -9,4 +9,4 @@ Period		Grupp				Serie		Värde
 2020-04-02;	Valutor mot svenska kronor;	100 JPY;	9.3231		
 2020-04-02;	Valutor mot svenska kronor;	100 NOK;	97.1812				
 2020-04-02;	Valutor mot svenska kronor;	100 RUB;	12.8422			
-2020-04-02;	Valutor mot svenska kronor;	1 USD;		9.9998	
+2020-04-02;	Valutor mot svenska kronor;	1 USD;		9.9998
