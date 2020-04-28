@@ -61,18 +61,6 @@ public class TestJUnitStatistic {
 		testCurrencyCodes.add("NOK");
 		testCurrencyCodes.add("RUB");
 		testCurrencyCodes.add("USD");
-
-		testCurrencyMap.putIfAbsent("AUD", new Currency("AUD", 6.0));
-		testCurrencyMap.putIfAbsent("CHF", new Currency("CHF", 10.0));
-		testCurrencyMap.putIfAbsent("CNY", new Currency("CNY", 1.0));
-		testCurrencyMap.putIfAbsent("DKK", new Currency("DKK", 2.0));
-		testCurrencyMap.putIfAbsent("EUR", new Currency("EUR", 11.0));
-		testCurrencyMap.putIfAbsent("GBP", new Currency("GBP", 12.0));
-		testCurrencyMap.putIfAbsent("INR", new Currency("INR", 0.2));
-		testCurrencyMap.putIfAbsent("JPY", new Currency("JPY", 0.1));
-		testCurrencyMap.putIfAbsent("NOK", new Currency("NOK", 1.0));
-		testCurrencyMap.putIfAbsent("RUB", new Currency("RUB", 0.1));
-		testCurrencyMap.putIfAbsent("USD", new Currency("USD", 10.0));
 	}
 
 	@Test
@@ -171,5 +159,81 @@ public class TestJUnitStatistic {
 		Map<String, Integer> resultMap = testStats.getTotalAmount("2020-04-01");
 
 		assertTrue(-4778 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetTotalBuy() {
+		
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getTotalBuy("2020-04-01");
+		
+		assertTrue(16521 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetTotalSell() {
+		
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getTotalSell("2020-04-01");
+		
+		assertTrue(11742 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetTotalTransactions() {
+		
+		Statistic testStats = new Statistic(testTransactionList, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap= testStats.getTotalTransactions();
+		
+		assertTrue(3 == resultMap.get("EUR"));
+	}
+	
+	@Test
+	public void testGetTotalTransactionsBuy() {
+		
+		Statistic testStats = new Statistic(testTransactionList, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap= testStats.getTotalTransactionsBuy();
+		
+		assertTrue(1 == resultMap.get("USD"));
+	}
+	
+	@Test
+	public void testGetTotalTransactionsSell() {
+		
+		Statistic testStats = new Statistic(testTransactionList, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap= testStats.getTotalTransactionsSell();
+		
+		assertTrue(3 == resultMap.get("EUR"));
+	}
+	
+	@Test
+	public void testGetDiffCurrency1() {
+		
+		Statistic testStats = new Statistic(testTransactionList, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap= testStats.getDiffCurrency();
+		
+		assertTrue(-700 == resultMap.get("EUR"));
+	}
+	
+	@Test
+	public void testGetDiffCurrency2() {
+		
+		Statistic testStats = new Statistic(testTransactionList, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap= testStats.getDiffCurrency();
+		
+		assertTrue(150 == resultMap.get("USD"));
+	}
+	
+	@Test
+	public void testGetProfit() {
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+
+		Map<String, Integer> resultMap = testStats.getProfit("2020-04-01");
+		
+		for (Map.Entry<String, Integer> entry : resultMap.entrySet()) {
+		    System.out.println(entry.getKey() + ":" + entry.getValue().toString());
+		}
+		
+		assertTrue(141 == resultMap.get("GBP"));
 	}
 }
