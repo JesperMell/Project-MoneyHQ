@@ -204,7 +204,7 @@ public class Statistic {
 					.reduce(0, Integer::sum);																			// Sum up the amount into total sold in reference currency
 			
 			// Calculate the total profit from the sold amount and the bought amount based on profit margin
-			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * HQApp.PROFIT_EXCHANGE_RATE));
+			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * HQApp.PROFIT_MARGIN_RATE));
 			
 			resultMap.putIfAbsent(code, profit);
 		}
