@@ -176,7 +176,7 @@ public class TestJUnitStatistic {
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
 		Map<String, Integer> resultMap = testStats.getTotalSell("2020-04-01");
 		
-		assertTrue(11742 == resultMap.get("GBP"));
+		assertTrue(11743 == resultMap.get("GBP"));
 	}
 	
 	@Test
@@ -229,10 +229,6 @@ public class TestJUnitStatistic {
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
 
 		Map<String, Integer> resultMap = testStats.getProfit("2020-04-01");
-		
-		for (Map.Entry<String, Integer> entry : resultMap.entrySet()) {
-		    System.out.println(entry.getKey() + ":" + entry.getValue().toString());
-		}
 		
 		assertTrue(141 == resultMap.get("GBP"));
 	}
