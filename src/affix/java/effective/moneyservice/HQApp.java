@@ -11,6 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class HQApp {
 	
@@ -19,10 +25,40 @@ public class HQApp {
 	
 	static final double PROFIT_MARGIN_RATE = 0.005;
 	
+	// create logger
+	private static Logger logger;
+	
+	static {
+		logger = Logger.getLogger("affix.java.effective.moneyservice");
+	}
+	
+	
+	private static void setupLogger() {
+		LogManager.getLogManager().reset();
+		// set the level of logging.
+		logger.setLevel(Level.ALL);
+		// Create a new Handler for console.
+		ConsoleHandler consHandler = new ConsoleHandler();
+		consHandler.setLevel(Level.WARNING);
+		logger.addHandler(consHandler);
+		
+		try {
+			// Create a new Handler for file.
+		FileHandler fHandler = new FileHandler("HQlogger.log");
+		fHandler.setFormatter(new SimpleFormatter());
+		// set level of logging
+		fHandler.setLevel(Level.FINEST);
+		logger.addHandler(fHandler);
+		}catch(IOException e) {
+			logger.log(Level.SEVERE, "File logger not working! ", e);
+		}
+	}
 	
 	public static void main(String[] args) {
 		// MAIN STARTING HERE
 		
+		// Setting up logger.
+		setupLogger();
 		
 		
 		// BELOW CODE IS JUST FOR TESTING PURPOSE AND SHOULD NOT BE USED
