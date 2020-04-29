@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A Site creates objects with a site name and their transactions
+ * 
+ * @author Group Center
+ */
 public class Site {
 	
 	private final String siteName;
@@ -17,8 +22,8 @@ public class Site {
 	
 	
 	/**
-	 * @param siteName
-	 * @param completedTransactions
+	 * @param siteName - a String holding the site name, like "NORTH", "CENTER", "SOUTH" etc..
+	 * @throws java.lang.IllegalArgumentException - if a site name is missing
 	 */
 	public Site(String siteName) {
 		if(siteName == null || siteName.isEmpty()) {
@@ -43,6 +48,12 @@ public class Site {
 		return completedTransactions;
 	}
 
+	/**
+	 * Read all transactions between two dates.
+	 * @param startDate - a start date in the format YYYY-MM-DD
+	 * @param endDate - an end date in the format YYYY-MM-DD
+	 * @throws ClassNotFoundException - if the startDate and EndDate is missing or not on the format YYYY-MM-DD  
+	 */
 	@SuppressWarnings("unchecked")
 	public void readTransactions(LocalDate startDate, LocalDate endDate) throws ClassNotFoundException {
 		logger.info("Entering readTransactions method -->");

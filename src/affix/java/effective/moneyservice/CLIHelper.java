@@ -10,10 +10,19 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * This is a support class for user interaction using CLI
+ * 
+ * @author Group Center
+ *
+ */
 public class CLIHelper {
 
 	static Scanner input = new Scanner(System.in);
 
+	/**
+	 * In the menu input we choose a period type
+	 */
 	enum Period {
 		DAY, WEEK, MONTH
 	};
@@ -22,7 +31,7 @@ public class CLIHelper {
 	 * menuInput.
 	 * 
 	 * Main method for user to enter values.
-	 * 
+	 * @return int - equal to 0
 	 */
 	static int menuInput() {
 		Set<String> sites;
@@ -62,7 +71,7 @@ public class CLIHelper {
 	 * 
 	 * Returns a list with the selected site names.
 	 * 
-	 * @return Set<String>
+	 * @return Set<String> - a list with the selected site names
 	 */
 	private static Set<String> readSites() {
 		System.out.println("Choose a Site (For multiple choices use comma seperation)");
@@ -109,7 +118,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering start date.
 	 * 
-	 * @return Optional<LocalDate>
+	 * @return Optional<LocalDate> - a LocalDate in the format YYYY-MM-DD if available
 	 */
 	 static Optional<LocalDate> readStartDay() {
 		System.out.println("Enter start day of Period");
@@ -126,7 +135,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering Period.
 	 * 
-	 * @return Optional<Period>
+	 * @return Optional<Period> - a Period if available
 	 */
 	private static Optional<Period> readPeriod() {
 		int i = 0;
@@ -150,7 +159,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for selecting currency.
 	 * 
-	 * @return Optional<String>
+	 * @return Optional<String> - a String with currency code if available
 	 */
 	private static Optional<String> readCurrency() {
 		System.out.println("Choose a Currency");
@@ -170,7 +179,9 @@ public class CLIHelper {
 	 * 
 	 * Calculates the endDate for startDate and Period.
 	 * 
-	 * @return LocalDate
+	 * @param period - an enum type
+	 * @param startDate - a start date in the format YYYY-MM-DD
+	 * @return LocalDate - an end date in the format YYYY-MM-DD
 	 */
 	private static LocalDate createEndDate(Period period, LocalDate startDate) {
 		switch(period) {

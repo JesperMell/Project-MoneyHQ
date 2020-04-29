@@ -11,6 +11,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Statistic generator for producing data
+ * like total amount, quantity, average amount and profit
+ * 
+ * @author Group Center
+ */
 public class Statistic {
 
 
@@ -23,9 +29,9 @@ public class Statistic {
 	private String siteName;
 
 	/**
-	 * @param transactions
-	 * @param currencyCodes
-	 * @param siteName
+	 * @param transactions - a list of transactions
+	 * @param currencyCodes - a list of currency codes
+	 * @param siteName - a String holding the site name, like "NORTH", "CENTER", "SOUTH" etc..
 	 */
 	public Statistic(List<Transaction> transactions, List<String> currencyCodes, String siteName) {
 		if(transactions == null || transactions.isEmpty()) {
@@ -70,7 +76,7 @@ public class Statistic {
 	
 	/**
 	 * Get the total amount for each currency in the chosen reference currency
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return Map with an amount for each currency in reference currency
 	 */
 	public Map<String, Integer> getTotalAmount(String filteredDate) {
@@ -111,7 +117,7 @@ public class Statistic {
 
 	/**
 	 * The same as method "getTotalAmount" filtered for only BUY-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
 	 */
 	public Map<String, Integer> getTotalAmountBuy(String filteredDate) {
@@ -142,7 +148,7 @@ public class Statistic {
 
 	/**
 	 * The same as method "getTotalAmount" filtered for only SELL-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
 	 */
 	public Map<String, Integer> getTotalAmountSell(String filteredDate) {
@@ -173,7 +179,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactions() {
@@ -195,7 +200,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed buy transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsBuy() {
@@ -218,7 +222,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed sell transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsSell() {
@@ -242,7 +245,6 @@ public class Statistic {
 	/**
 	 * Method for calculating the difference of between sold and bought amount 
 	 * in each currency
-	 * @param none
 	 * @return Map holding the result of calculation in each currency
 	 */
 	public Map<String, Integer> getDiffCurrency() {
@@ -274,7 +276,7 @@ public class Statistic {
 	/**
 	 * Method for calculating the profit in the reference currency for each currency per day
 	 * Reading the exchange rates from file based on date.
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return Map holding the result of calculation with profit in each currency per day in List<Transaction>
 	 */
 	public Map<String, Integer> getProfit(String filteredDate) {
@@ -328,8 +330,8 @@ public class Statistic {
 	
 	/**
 	 * Get the average amount for each currency in the chosen reference currency
-	 * @param A string holding a date in the format of YYYY-MM-DD
-	 * @return Map with an average amount for each currency in reference currency
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
+	 * @return Map with currency code as key and an average amount for each currency in reference currency as value
 	 */
 	public Map<String, Integer> getAverageAmount(String filteredDate) {
 			
@@ -349,7 +351,7 @@ public class Statistic {
 	
 	/**
 	 * The same as method "getAverageAmount" but only for BUY-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getAverageAmount" but only for BUY-transactions
 	 */
 	public Map<String, Integer> getAverageAmountBuy(String filteredDate) {
@@ -370,7 +372,7 @@ public class Statistic {
 
 	/**
 	 * The same as method "getAverageAmount" but only for SELL-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getAverageAmount" but only for SELL-transactions
 	 */
 	public Map<String, Integer> getAverageAmountSell(String filteredDate) {

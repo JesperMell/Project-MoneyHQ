@@ -2,12 +2,13 @@ package affix.java.effective.moneyservice;
 
 import java.time.LocalDateTime;
 
-
+/**
+ * Transaction is a value type to be used in the class Statistic
+ * 
+ * @author Group Center
+ */
 public class Transaction implements java.io.Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private final int id;
@@ -18,6 +19,13 @@ public class Transaction implements java.io.Serializable{
 	
 	private static int uniqueId = 0;
 	
+	/**
+	 * Constructor
+	 * @param currencyCode - a list of currency codes
+	 * @param amount - an int holding the validated order amount
+	 * @param mode - a TransactionMode holding the type of the validated order
+	 * @throws java.lang.IllegalArgumentException if currency code is missing or the amount is too low
+	 */
 	public Transaction(String currencyCode, int amount, TransactionMode mode) {
 		this(currencyCode, amount, mode, ++uniqueId);
 	}
