@@ -17,9 +17,6 @@ public class HQApp {
 	static Map<String, Site> sites = new HashMap<>();
 	static Map<String, Currency> currencyMap = new HashMap<>();
 	
-	static final double PROFIT_MARGIN_RATE = 0.005;
-	
-	
 	public static void main(String[] args) {
 		// MAIN STARTING HERE
 		

@@ -11,6 +11,7 @@ public class Statistic {
 
 	private static final double BUY_RATE = 0.995;
 	private static final double SELL_RATE = 1.005;
+	private static final double PROFIT_MARGIN_RATE = 0.005;
 
 	private List<Transaction> transactions = new ArrayList<>();
 	private List<String> currencyCodes = new ArrayList<>();
@@ -302,7 +303,7 @@ public class Statistic {
 					.reduce(0, Integer::sum);																			// Sum up the amount into total sold in reference currency
 
 			// Calculate the total profit from the sold amount and the bought amount based on profit margin
-			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * HQApp.PROFIT_MARGIN_RATE));
+			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * PROFIT_MARGIN_RATE));
 
 			resultMap.putIfAbsent(code, profit);
 		}
