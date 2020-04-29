@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class CLIHelper {
 
-	static Scanner input = new Scanner(System.in);
+	private static Scanner input = new Scanner(System.in);
 
 	enum Period {
 		DAY, WEEK, MONTH
@@ -76,18 +76,17 @@ public class CLIHelper {
 				stat.setAmountBuy(s.getTotalAmountBuy(l.toString()));
 				stat.setAmountSell(s.getTotalAmountSell(l.toString()));
 				stat.setTotal(s.getTotalAmount(l.toString()));
-				
+
 				result.add(stat);
 			}
 		}
-		
-		
+
 		result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
 			Map<String, Integer> profit = new HashMap<>();
 			Map<String, Integer> amountBuy = new HashMap<>();
 			Map<String, Integer> amountSell = new HashMap<>();
 			Map<String, Integer> total = new HashMap<>();
-			
+
 			System.out.println(k);
 			v.forEach((s) -> {
 				System.out.println(s.getDate());
@@ -95,7 +94,7 @@ public class CLIHelper {
 				System.out.println(s.getAmountBuy());
 				System.out.println(s.getAmountSell());
 				System.out.println(s.getTotal());
-				
+
 				s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
 				s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
 				s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
@@ -170,16 +169,19 @@ public class CLIHelper {
 		// The TreeList where the selected sites
 		// should be appended to.
 		Set<Site> result = new HashSet<>();
+		try {
+			for (String data : input.next().split(",")) {
+				int index = Integer.parseInt(data.trim());
+				// if i == index, then the 'ALL' option is selected.
+				// All sites should then be returned, else append selected
+				// site to the result TreeSet.
+				if (i == index)
+					return new HashSet<>(HQApp.sites.values());
 
-		for (String data : input.next().split(",")) {
-			int index = Integer.parseInt(data.trim());
-			// if i == index, then the 'ALL' option is selected.
-			// All sites should then be returned, else append selected
-			// site to the result TreeSet.
-			if (i == index)
-				return (Set<Site>) HQApp.sites.values();
-
-			result.add(sites.get(index - 1));
+				result.add(sites.get(index - 1));
+			}
+		} catch (IndexOutOfBoundsException e) {
+			return new HashSet<>();
 		}
 
 		System.out.println("Site selected: ");
@@ -196,13 +198,13 @@ public class CLIHelper {
 	 * 
 	 * @return Optional<LocalDate>
 	 */
-	static Optional<LocalDate> readStartDay() {
+	private static Optional<LocalDate> readStartDay() {
 		System.out.println("Enter start day of Period");
 		try {
 			return Optional.of(LocalDate.parse(input.next()));
 		} catch (DateTimeParseException e) {
 			System.out.println("Invalid format, try again");
-			return null;
+			return Optional.empty();
 		}
 	}
 
@@ -226,23 +228,28 @@ public class CLIHelper {
 			return Optional.of(Period.values()[data - 1]);
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("Wrong input.");
-			return null;
+			return Optional.empty();
 		}
 	}
 
 	/**
-	 * readCurrency.
+	 * readCurrencyCodes.
 	 * 
-	 * Display menu for selecting currency.
+	 * Display menu for selecting currencies.
 	 * 
 	 * @return Optional<String>
 	 */
 	private static List<String> readCurrencyCodes() {
 		System.out.println("Choose currencies (Use comma as seperator)");
 		HQApp.currencyMap.keySet().forEach((x) -> System.out.print(x + " "));
+		System.out.println("ALL");
 		String data = input.next();
 
 		List<String> currencies = new ArrayList<>();
+		
+		if(data.equals("ALL")) {
+			return new ArrayList<String>(HQApp.currencyMap.keySet());
+		}
 
 		for (String code : data.split(",")) {
 			if (HQApp.currencyMap.get(code) != null)
@@ -286,44 +293,88 @@ class StatDay {
 		this.date = date;
 	}
 
-	public Map<String, Integer> getAmountBuy() {
-		return amountBuy;
-	}
-
-	public void setAmountBuy(Map<String, Integer> amountBuy) {
-		this.amountBuy = amountBuy;
-	}
-
-	public Map<String, Integer> getAmountSell() {
-		return amountSell;
-	}
-
-	public void setAmountSell(Map<String, Integer> amountSell) {
-		this.amountSell = amountSell;
-	}
-
-	public Map<String, Integer> getTotal() {
-		return total;
-	}
-
-	public void setTotal(Map<String, Integer> total) {
-		this.total = total;
-	}
-
-	public void setProfit(Map<String, Integer> profit) {
-		this.profit = profit;
-	}
-
+	/**
+	 * @return the profit
+	 */
 	public Map<String, Integer> getProfit() {
 		return profit;
 	}
 
+	/**
+	 * @param profit the profit to set
+	 */
+	public void setProfit(Map<String, Integer> profit) {
+		this.profit = profit;
+	}
+
+	/**
+	 * @return the amountBuy
+	 */
+	public Map<String, Integer> getAmountBuy() {
+		return amountBuy;
+	}
+
+	/**
+	 * @param amountBuy the amountBuy to set
+	 */
+	public void setAmountBuy(Map<String, Integer> amountBuy) {
+		this.amountBuy = amountBuy;
+	}
+
+	/**
+	 * @return the amountSell
+	 */
+	public Map<String, Integer> getAmountSell() {
+		return amountSell;
+	}
+
+	/**
+	 * @param amountSell the amountSell to set
+	 */
+	public void setAmountSell(Map<String, Integer> amountSell) {
+		this.amountSell = amountSell;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public Map<String, Integer> getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total the total to set
+	 */
+	public void setTotal(Map<String, Integer> total) {
+		this.total = total;
+	}
+
+	/**
+	 * @return the site
+	 */
 	public String getSite() {
 		return site;
 	}
 
+	/**
+	 * @param site the site to set
+	 */
+	public void setSite(String site) {
+		this.site = site;
+	}
+
+	/**
+	 * @return the date
+	 */
 	public LocalDate getDate() {
 		return date;
+	}
+
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 }
