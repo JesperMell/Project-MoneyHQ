@@ -1,0 +1,18 @@
+apr. 29, 2020 9:52:54 FM affix.java.effective.moneyservice.Site readTransactions
+INFO: Entering readTransactions method -->
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-05.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-10.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-11.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-12.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-13.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-18.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-19.ser (Det går inte att hitta filen)
+apr. 29, 2020 9:52:55 FM affix.java.effective.moneyservice.Site readTransactions
+INFO: Exiting readTransaction method <--
