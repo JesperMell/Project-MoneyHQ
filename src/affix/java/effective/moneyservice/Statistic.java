@@ -234,6 +234,9 @@ public class Statistic {
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			long count = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
 					.filter(t -> t.getMode().equals(TransactionMode.BUY))       // Filter on TransactionMode.BUY
@@ -261,6 +264,9 @@ public class Statistic {
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			long count = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
 					.filter(t -> t.getMode().equals(TransactionMode.SELL))       // Filter on TransactionMode.SELL
