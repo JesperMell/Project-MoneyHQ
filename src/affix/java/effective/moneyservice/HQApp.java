@@ -37,7 +37,7 @@ public class HQApp {
 		logger.setLevel(Level.ALL);
 		// Create a new Handler for console.
 		ConsoleHandler consHandler = new ConsoleHandler();
-		consHandler.setLevel(Level.WARNING);
+		consHandler.setLevel(Level.SEVERE);
 		logger.addHandler(consHandler);
 		
 		try {
@@ -136,6 +136,7 @@ public class HQApp {
 			}
 		}
 		catch (IOException ioe) {
+			logger.log(Level.SEVERE, "Could not read CurrencyConfig file properly! " + ioe);
 			System.out.println("An IOException occurred for file ");
 		}
 		logger.info("Exiting readCurrencyConfigFIle method <--");

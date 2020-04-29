@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Statistic {
@@ -21,6 +23,8 @@ public class Statistic {
 	private List<Transaction> transactions = new ArrayList<>();
 	private List<String> currencyCodes = new ArrayList<>();
 	private String siteName;
+	
+	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	/**
 	 * @param transactions
@@ -28,15 +32,19 @@ public class Statistic {
 	 * @param siteName
 	 */
 	public Statistic(List<Transaction> transactions, List<String> currencyCodes, String siteName) {
+		logger.info("Entering Statistics constructor -->");
 		if(transactions == null || transactions.isEmpty()) {
+			logger.log(Level.WARNING, "Transactions not found! ");
 			throw new IllegalArgumentException("No transactions provided");
 		}
 		else {
 			if(currencyCodes == null || currencyCodes.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode not found! ");
 				throw new IllegalArgumentException("Missing currency codes");
 			}
 			else {
 				if(siteName == null || siteName.isEmpty()) {
+					logger.log(Level.WARNING, "siteName not found! ");
 					throw new IllegalArgumentException("Missing site name");
 				}
 			}
@@ -44,6 +52,7 @@ public class Statistic {
 		this.transactions = transactions;
 		this.currencyCodes = currencyCodes;
 		this.siteName = siteName;
+		logger.info("Exiting Statistics constructor <--");
 	}
 
 	/**
@@ -74,7 +83,8 @@ public class Statistic {
 	 * @return Map with an amount for each currency in reference currency
 	 */
 	public Map<String, Integer> getTotalAmount(String filteredDate) {
-
+		
+		logger.info("Entering getTotalAmount method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -103,9 +113,11 @@ public class Statistic {
 
 			// Calculate the total profit from the sold amount and the bought amount based on profit margin
 			Integer differenceSoldBought = sumSellAmount - sumBuyAmount;
-
+			
 			resultMap.putIfAbsent(code, differenceSoldBought);
 		}
+		logger.info("total profit for all currency : " + resultMap);
+		logger.info("Exiting getTotalAmount method <--");
 		return resultMap;
 	}
 
