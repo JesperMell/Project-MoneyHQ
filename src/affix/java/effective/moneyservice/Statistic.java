@@ -127,7 +127,8 @@ public class Statistic {
 	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
 	 */
 	public Map<String, Integer> getTotalAmountBuy(String filteredDate) {
-
+		
+		logger.info("Entering getTotalAmountBuy method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -136,6 +137,9 @@ public class Statistic {
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
 
@@ -149,6 +153,8 @@ public class Statistic {
 			
 			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
+		logger.info("Total amount bought for every currency: " + resultMap);
+		logger.info("Exiting getTotalAmountBuy method <--");
 		return resultMap;
 	}
 
@@ -158,7 +164,8 @@ public class Statistic {
 	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
 	 */
 	public Map<String, Integer> getTotalAmountSell(String filteredDate) {
-
+		
+		logger.info("Entering getTotalAmountSell method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -167,6 +174,9 @@ public class Statistic {
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
 
@@ -180,6 +190,8 @@ public class Statistic {
 			
 			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
+		logger.info("Total amount sold for every currency: " + resultMap);
+		logger.info("Exiting getTotalAmountSell method <--");
 		return resultMap;
 	}	
 
