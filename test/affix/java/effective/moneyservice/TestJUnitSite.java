@@ -35,7 +35,11 @@ public class TestJUnitSite {
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 02);
 		
-		s1.readTransactions(startDate, endDate);
+		try {
+			s1.readTransactions(startDate, endDate);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		List<Transaction> testTrans = s1.getCompletedTransactions();
 		
 		assertTrue(testTrans.size() == 17);
@@ -48,7 +52,11 @@ public class TestJUnitSite {
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 06);
 		
-		s1.readTransactions(startDate, endDate);
+		try {
+			s1.readTransactions(startDate, endDate);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		List<Transaction> testTrans = s1.getCompletedTransactions();
 		
 		assertTrue(testTrans.size() == 55);
