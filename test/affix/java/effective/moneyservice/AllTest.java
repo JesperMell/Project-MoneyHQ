@@ -9,10 +9,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses(
 		{
 			TestJUnitSite.class,
-			
-			
-			
-			
+			TestJunitTransaction.class,
+			TestJUnitCurrency.class,
+			TestJUnitStatistic.class
 		}
 		)
 public class AllTest {;}
