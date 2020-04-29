@@ -56,6 +56,7 @@ public class TestJunitTransaction {
 		assertEquals(TransactionMode.SELL, t1.getMode());
 	}
 	
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingCurrencyCode_1() {
 		Transaction t3 = new Transaction("", 1000, TransactionMode.SELL);
