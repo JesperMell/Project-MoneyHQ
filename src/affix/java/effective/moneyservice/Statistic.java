@@ -124,7 +124,8 @@ public class Statistic {
 	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
 	 */
 	public Map<String, Integer> getTotalAmountBuy(String filteredDate) {
-
+		
+		logger.info("Entering getTotalAmountBuy method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -133,6 +134,9 @@ public class Statistic {
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
 
@@ -146,6 +150,8 @@ public class Statistic {
 			
 			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
+		logger.info("Total amount bought for every currency: " + resultMap);
+		logger.info("Exiting getTotalAmountBuy method <--");
 		return resultMap;
 	}
 
@@ -155,7 +161,8 @@ public class Statistic {
 	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
 	 */
 	public Map<String, Integer> getTotalAmountSell(String filteredDate) {
-
+		
+		logger.info("Entering getTotalAmountSell method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -164,6 +171,9 @@ public class Statistic {
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
 
@@ -177,6 +187,8 @@ public class Statistic {
 			
 			resultMap.putIfAbsent(code, sumBuyAmount);
 		}
+		logger.info("Total amount sold for every currency: " + resultMap);
+		logger.info("Exiting getTotalAmountSell method <--");
 		return resultMap;
 	}	
 
@@ -186,11 +198,16 @@ public class Statistic {
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactions() {
+		
+		logger.info("Entering getTotalTransactions method -->");
 		Map<String, Integer> resultMap = new HashMap<>();
 
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			long count = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
 					.count(); 													// Calculate the number of transactions in filtered currency
@@ -199,6 +216,8 @@ public class Statistic {
 
 			resultMap.putIfAbsent(code, result);
 		}
+		logger.info("Total Transactionns: " + resultMap);
+		logger.info("Exiting getTotalTransactions method <--");
 		return resultMap;
 	}
 
@@ -208,11 +227,16 @@ public class Statistic {
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsBuy() {
+		
+		logger.info("Entering getTotalTransactionsBuy method -->");
 		Map<String, Integer> resultMap = new HashMap<>();
 
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			long count = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
 					.filter(t -> t.getMode().equals(TransactionMode.BUY))       // Filter on TransactionMode.BUY
@@ -222,6 +246,8 @@ public class Statistic {
 
 			resultMap.putIfAbsent(code, result);
 		}
+		logger.info("Total TransactionnsBuy: " + resultMap);
+		logger.info("Exiting getTotalTransactionsBuy method <--");
 		return resultMap;
 	}
 
@@ -231,11 +257,16 @@ public class Statistic {
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsSell() {
+		
+		logger.info("Entering getTotalTransactionsSell method -->");
 		Map<String, Integer> resultMap = new HashMap<>();
 
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			long count = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code)) 	// Filter based on currency code
 					.filter(t -> t.getMode().equals(TransactionMode.SELL))       // Filter on TransactionMode.SELL
@@ -245,6 +276,8 @@ public class Statistic {
 
 			resultMap.putIfAbsent(code, result);
 		}
+		logger.info("Total TransactionnsSell: " + resultMap);
+		logger.info("Exiting getTotalTransactionsSell method <--");
 		return resultMap;
 	}
 
@@ -255,11 +288,16 @@ public class Statistic {
 	 * @return Map holding the result of calculation in each currency
 	 */
 	public Map<String, Integer> getDiffCurrency() {
+		
+		logger.info("Entering getDiffCurrency method -->");
 		Map<String, Integer> resultMap = new HashMap<>();
 		int difference = 0;
 		// Create iterator for the existing currency codes and iterate
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 
 			Integer buyAmount = transactions.stream()
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))	// Filter based on currency code
@@ -277,6 +315,8 @@ public class Statistic {
 			difference = buyAmount - sellAmount;
 			resultMap.putIfAbsent(code, difference);
 		}
+		logger.info("Diff of all currency: " + resultMap);
+		logger.info("Exiting getDiffCurrency method <--");
 		return resultMap;
 	}
 
@@ -287,7 +327,8 @@ public class Statistic {
 	 * @return Map holding the result of calculation with profit in each currency per day in List<Transaction>
 	 */
 	public Map<String, Integer> getProfit(String filteredDate) {
-
+		
+		logger.info("Entering getProfit method -->");
 		// Read the exchange rate for input day and update the currencyMap with the new values
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> resultMap = new HashMap<>();
@@ -296,6 +337,9 @@ public class Statistic {
 		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
 
 			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			// Get the value from the currencyMap in current currency code
 			Currency temp = HQApp.currencyMap.get(code);
 
@@ -319,6 +363,8 @@ public class Statistic {
 
 			resultMap.putIfAbsent(code, profit);
 		}
+		logger.info("Total profit from every currency: " + resultMap);
+		logger.info("Exiting getProfit method <--");
 		return resultMap;
 	}
 
@@ -341,6 +387,8 @@ public class Statistic {
 	 * @return Map with an average amount for each currency in reference currency
 	 */
 	public Map<String, Integer> getAverageAmount(String filteredDate) {
+		
+		logger.info("Entering getAverageAmount method -->");
 			
 		Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
 		Map<String, Integer> hmNo = getTotalTransactions();
@@ -352,7 +400,8 @@ public class Statistic {
 		for (Map.Entry<String, Integer> meAmount : esetAmount)
 			for (Map.Entry<String, Integer> meNo : esetNo)
 				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
-			
+		logger.info("Avarage amount from all currency: " + resultMap);
+		logger.info("Exiting getAverageAmount method <--");
 		return resultMap;
 	}
 	
@@ -362,6 +411,8 @@ public class Statistic {
 	 * @return The same as method "getAverageAmount" but only for BUY-transactions
 	 */
 	public Map<String, Integer> getAverageAmountBuy(String filteredDate) {
+		
+		logger.info("Entering getAverageAmountBuy method -->");
 			
 		Map<String, Integer> hmAmount = getTotalAmountBuy(filteredDate);
 		Map<String, Integer> hmNo = getTotalTransactionsBuy();
@@ -373,7 +424,9 @@ public class Statistic {
 		for (Map.Entry<String, Integer> meAmount : esetAmount)
 			for (Map.Entry<String, Integer> meNo : esetNo)
 				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
-			
+		
+		logger.info("Avarage buy amount from all currency: " + resultMap);
+		logger.info("Exiting getAverageAmountBuy method <--");
 		return resultMap;
 	}
 
@@ -384,6 +437,7 @@ public class Statistic {
 	 */
 	public Map<String, Integer> getAverageAmountSell(String filteredDate) {
 			
+		logger.info("Entering getAverageAmountSell method -->");
 		Map<String, Integer> hmAmount = getTotalAmountSell(filteredDate);
 		Map<String, Integer> hmNo = getTotalTransactionsSell();
 		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
@@ -395,6 +449,8 @@ public class Statistic {
 			for (Map.Entry<String, Integer> meNo : esetNo)
 				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
 			
+		logger.info("Avarage sell amount from all currency: " + resultMap);
+		logger.info("Exiting getAverageAmountSell method <--");
 		return resultMap;
 	}
 }
