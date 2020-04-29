@@ -136,7 +136,7 @@ public class HQApp {
 			}
 		}
 		catch (IOException ioe) {
-			logger.log(Level.SEVERE, "Could not read CurrencyConfig file properly! " + ioe);
+			logger.log(Level.WARNING, "Could not read CurrencyConfig file properly! " + ioe);
 			System.out.println("An IOException occurred for file ");
 		}
 		logger.info("Exiting readCurrencyConfigFIle method <--");
