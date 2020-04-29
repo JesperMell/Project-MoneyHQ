@@ -11,7 +11,8 @@ import org.junit.runners.Suite.SuiteClasses;
 			TestJUnitSite.class,
 			TestJunitTransaction.class,
 			TestJUnitCurrency.class,
-			TestJUnitStatistic.class
+			TestJUnitStatistic.class,
+			TestJUnitStatDay.class,
 		}
 		)
 public class AllTest {;}
