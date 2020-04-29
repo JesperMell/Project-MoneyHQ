@@ -6,11 +6,14 @@ import java.io.ObjectInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Site {
 	
 	private final String siteName;
 	private List<Transaction> completedTransactions = new ArrayList<>();
+	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 	
 	
 	/**
@@ -42,18 +45,21 @@ public class Site {
 
 	@SuppressWarnings("unchecked")
 	public void readTransactions(LocalDate startDate, LocalDate endDate) {
+		logger.info("Entering readTransactions method -->");
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
 					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
+        
 			} catch (IOException ioe) {
 				System.out.format("No report for %s\n", startDate);
+        logger.log(Level.WARNING, "Could not read file! " + ioe);
 			} catch (ClassNotFoundException ioe) {
 				System.out.println("Reading error, class missmatch");
 			}
 			startDate = startDate.plusDays(1);
 		} while (!startDate.equals(endDate));
+		logger.info("Exiting readTransaction method <--");
 	}
-
 }
