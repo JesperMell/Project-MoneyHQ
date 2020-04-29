@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class CLIHelper {
 
-	private static Scanner input = new Scanner(System.in);
+	static Scanner input = new Scanner(System.in);
 
 	enum Period {
 		DAY, WEEK, MONTH
@@ -58,7 +58,12 @@ public class CLIHelper {
 		List<Statistic> statistics = new ArrayList<>();
 
 		for (Site s : sites) {
-			s.readTransactions(startDay.get(), endDay);
+			try {
+				s.readTransactions(startDay.get(), endDay);
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
 		}
 

@@ -19,18 +19,18 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class HQApp {
-	
+
 	static Map<String, Site> sites = new HashMap<>();
 	static Map<String, Currency> currencyMap = new HashMap<>();
-	
+
 	// create logger
 	private static Logger logger;
-	
+
 	static {
 		logger = Logger.getLogger("affix.java.effective.moneyservice");
 	}
-	
-	
+
+
 	private static void setupLogger() {
 		LogManager.getLogManager().reset();
 		// set the level of logging.
@@ -39,99 +39,116 @@ public class HQApp {
 		ConsoleHandler consHandler = new ConsoleHandler();
 		consHandler.setLevel(Level.SEVERE);
 		logger.addHandler(consHandler);
-		
+
 		try {
 			// Create a new Handler for file.
-		FileHandler fHandler = new FileHandler("HQlogger.log");
-		fHandler.setFormatter(new SimpleFormatter());
-		// set level of logging
-		fHandler.setLevel(Level.FINEST);
-		logger.addHandler(fHandler);
+			FileHandler fHandler = new FileHandler("HQlogger.log");
+			fHandler.setFormatter(new SimpleFormatter());
+			// set level of logging
+			fHandler.setLevel(Level.FINEST);
+			logger.addHandler(fHandler);
 		}catch(IOException e) {
 			logger.log(Level.SEVERE, "File logger not working! ", e);
 		}
 	}
 
 	public static void main(String[] args) {
-		// MAIN STARTING HERE
-		
 		// Setting up logger.
 		setupLogger();
-		
-		
-		// BELOW CODE IS JUST FOR TESTING PURPOSE AND SHOULD NOT BE USED
-		currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_2020-04-01.txt");
-		
-		Site testSite = new Site("TestSite");
-		
-		LocalDate startDate = LocalDate.of(2020, 04, 01);
-		LocalDate endDate = LocalDate.of(2020, 04, 20);
-		
-		testSite.readTransactions(startDate, endDate);
-		List<Transaction> testTrans = testSite.getCompletedTransactions();
-		
-		ArrayList<String> currencyList = new ArrayList<String>(currencyMap.keySet());
-		
-		
-		Statistic stats = new Statistic(testTrans, currencyList, testSite.getSiteName());
-		
-		
-		Map<String, Integer> resultMap = createProfitStatistics(stats);
-		
-		int total = 0;
-		for (Map.Entry<String, Integer> entry : resultMap.entrySet()) {
-		    System.out.println(entry.getKey() + ":" + entry.getValue().toString());
-		    total = total + entry.getValue();
+
+		if(args.length > 0) {
+			currencyMap = readCurrencyConfigFile(args[0]);
 		}
-		System.out.format("PROFIT: %d", total);
-		// CODE ABOVE UP TO COMENT SHOULD NOT BE USED AND IS ONLY USED FOR TESTING PURPOSE
-		
+		else {
+			currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_Default_Accepted.txt");
+		}
+		CLIapplication();
 	}
-	
-	private static Map<String, Integer> createProfitStatistics(Statistic stats) {
-		//logger.info("Entering createProfitStatistics method -->");
-		Map<String, Integer> resultMap = new HashMap<>();
-		Map<String, Integer> dayResultMap = new HashMap<>();
-		Set<String> dateList = new TreeSet<>();
-		
-		stats.getTransactions().stream()
-				.map(t -> String.format("%s", t.getTimeStamp().toLocalDate()))
-				.forEach((t) -> { dateList.add(t);});
-				
-		for (Iterator<String> iter = dateList.iterator(); iter.hasNext(); ) {
-			String fileDate = iter.next();
-			dayResultMap = stats.getProfit(fileDate);
-			
-			for (Map.Entry<String, Integer> entry : dayResultMap.entrySet()) {
-				if(resultMap.containsKey(entry.getKey())) {
-					resultMap.replace(entry.getKey(), entry.getValue() + resultMap.get(entry.getKey()));
-				}
-				else {
-					resultMap.putIfAbsent(entry.getKey(), entry.getValue());
-				}
+
+	private static void CLIapplication() {
+
+		boolean done = false;
+		do {
+			int choice = HQmenu();
+			Site newSite;
+
+			switch(choice) {
+			case 1:
+				System.out.println("Register exchange office");
+				newSite = createNewSite();
+				sites.putIfAbsent(newSite.getSiteName(), newSite);
+				break;
+			case 2:
+				CLIHelper.menuInput();
+				break;
+			case 0:
+				done = true;
+				break;
+			default:
+				System.out.println("Not a valid menu choice!");
 			}
-		}
-		//logger.info("Exiting createProfitStatistics method <--");
-		return resultMap;
+		}while(!done);
 	}
-	
-	private void CLIApplication() {
+
+	private static int HQmenu() {
+		int choice = 0;
+		boolean ok;
+		do {
+			ok = true;
+			System.out.println("Money Service HQ");
+			System.out.println("----------------");
+			System.out.println("What would you like to do?");
+			System.out.println("1 - Register a new exchange office");
+			System.out.println("2 - Get statistics for registered offices");
+			System.out.println("0 - Exit the HQ application");
+
+			System.out.print("Enter your choice: ");
+			String userChoice = CLIHelper.input.next();
+
+			try {
+				choice = Integer.parseInt(userChoice);
+			}catch(NumberFormatException e) {
+				System.out.format("Your choice %s is not accepted!", userChoice);
+				ok = false;
+			}
+		}while(!ok);
+
+		return choice;
+	}
+
+	private static Site createNewSite() {
+		Site newSite = null;
+		boolean ok;
 		
+		do {
+			try {
+				ok = true;
+				System.out.println("Write the name of the exchange office (must be the same as existing report)");
+				String siteName = CLIHelper.input.next();
+				newSite = new Site(siteName.toUpperCase());
+			}
+			catch (IllegalArgumentException e) {
+				System.out.println("The name can not be empty");
+				ok = false;
+			}
+		} while (!ok);
+		
+		return newSite;
 	}
-	
-	
+
+
 	public static Map<String, Currency> readCurrencyConfigFile(String filename) {
 		logger.info("Entering readCurrencyConfigFIle method -->");
 		int lineNumber = 1;
 		Map<String, Currency> tempMap = new HashMap<>();
 		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 			while (br.ready()) {
-				
+
 				String row = br.readLine();
 				if (lineNumber++ < 2) continue;
-				
+
 				Currency currency = parseInput(row);
-				
+
 				tempMap.putIfAbsent(currency.getCurrencyCode(), currency);
 			}
 		}
@@ -142,26 +159,26 @@ public class HQApp {
 		logger.info("Exiting readCurrencyConfigFIle method <--");
 		return tempMap;
 	}
-	
+
 	public static void readConfigFile() {
-		
+
 	}
 
 	private static Currency parseInput(String input) {
-		
+
 		// The column looks like following:
 		// column 0 = Period
 		// column 1 = Group
 		// column 2 = "Serie" (Currency code)
 		// column 3 = Exchange rate
 		String[] parts = input.split(";");
-		
+
 		String[] currencyCodeParts = parts[2].split(" ");
 		String currencyCode = currencyCodeParts[1].strip();
-		
+
 		String exchangeRateString = parts[3].strip();
 		double exchangeRate = Double.parseDouble(exchangeRateString);
-		
+
 		if (currencyCodeParts[0].strip().length() > 1)
 			return new Currency(currencyCode, exchangeRate/100);
 		else
