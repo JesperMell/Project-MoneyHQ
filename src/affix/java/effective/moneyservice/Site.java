@@ -44,7 +44,7 @@ public class Site {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void readTransactions(LocalDate startDate, LocalDate endDate) {
+	public void readTransactions(LocalDate startDate, LocalDate endDate) throws ClassNotFoundException {
 		logger.info("Entering readTransactions method -->");
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
@@ -56,7 +56,7 @@ public class Site {
 				System.out.format("No report for %s\n", startDate);
         logger.log(Level.WARNING, "Could not read file! " + ioe);
 			} catch (ClassNotFoundException ioe) {
-				System.out.println("Reading error, class missmatch");
+				throw new ClassNotFoundException("Reading error, class missmatch" + ioe);
 			}
 			startDate = startDate.plusDays(1);
 		} while (!startDate.equals(endDate));
