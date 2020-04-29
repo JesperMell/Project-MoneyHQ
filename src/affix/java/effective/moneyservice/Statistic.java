@@ -2,12 +2,12 @@ package affix.java.effective.moneyservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IntSummaryStatistics;
+//import java.util.IntSummaryStatistics;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
+//import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Statistic {
@@ -52,6 +52,7 @@ public class Statistic {
 		return siteName;
 	}
 
+	
 	/**
 	 * Get the total amount for each currency in the chosen reference currency
 	 * @param A string holding a date in the format of YYYY-MM-DD
@@ -86,7 +87,7 @@ public class Statistic {
 	 * @param A string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
 	 */
-	public Map<String, Integer> getTotalBuy(String filteredDate) {
+	public Map<String, Integer> getTotalAmountBuy(String filteredDate) {
 
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> hm = new HashMap<String, Integer>();
@@ -109,7 +110,7 @@ public class Statistic {
 	 * @param A string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
 	 */
-	public Map<String, Integer> getTotalSell(String filteredDate) {
+	public Map<String, Integer> getTotalAmountSell(String filteredDate) {
 
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile(String.format("ExchangeRates/CurrencyConfig_%s.txt", filteredDate));
 		Map<String, Integer> hm = new HashMap<String, Integer>();
@@ -126,6 +127,8 @@ public class Statistic {
 		
 		return resultMap;
 	}	
+	
+	
 	
 	/**
 	 * Method for calculating number of completed transactions done of each currency
@@ -148,7 +151,6 @@ public class Statistic {
 		}
 		return resultMap;
 	}
-
 
 	/**
 	 * Method for calculating number of completed buy transactions done of each currency
@@ -173,7 +175,6 @@ public class Statistic {
 		return resultMap;
 	}
 
-
 	/**
 	 * Method for calculating number of completed sell transactions done of each currency
 	 * @param none
@@ -197,6 +198,7 @@ public class Statistic {
 		return resultMap;
 	}
 
+	
 	
 	/**
 	 * Method for calculating the difference of between sold and bought amount 
@@ -230,6 +232,8 @@ public class Statistic {
 		return resultMap;
 	}
 
+	
+	
 	/**
 	 * Method for calculating the profit in the reference currency for each currency per day
 	 * Reading the exchange rates from file based on date.
@@ -272,14 +276,75 @@ public class Statistic {
 		return resultMap;
 	}
 
+	
 	//	
 	//	public Map<String, Integer> getTransactionCountPerCurrency() {
 	//		
 	//	}
 
-//		public Map<String, Integer> getAverageAmount() {
-//			
-//			Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
-//			Map<String, Integer> hmNo = getTotalTransactions();
-//		}
+	
+	
+	/**
+	 * Get the average amount for each currency in the chosen reference currency
+	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @return Map with an average amount for each currency in reference currency
+	 */
+	public Map<String, Integer> getAverageAmount(String filteredDate) {
+			
+		Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
+		Map<String, Integer> hmNo = getTotalTransactions();
+		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
+			
+		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
+		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
+			
+		for (Map.Entry<String, Integer> meAmount : esetAmount)
+			for (Map.Entry<String, Integer> meNo : esetNo)
+				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
+			
+		return resultMap;
+	}
+	
+	/**
+	 * The same as method "getAverageAmount" but only for BUY-transactions
+	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @return The same as method "getAverageAmount" but only for BUY-transactions
+	 */
+	public Map<String, Integer> getAverageAmountBuy(String filteredDate) {
+			
+		Map<String, Integer> hmAmount = getTotalAmountBuy(filteredDate);
+		Map<String, Integer> hmNo = getTotalTransactionsBuy();
+		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
+			
+		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
+		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
+			
+		for (Map.Entry<String, Integer> meAmount : esetAmount)
+			for (Map.Entry<String, Integer> meNo : esetNo)
+				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
+			
+		return resultMap;
+	}
+
+	/**
+	 * The same as method "getAverageAmount" but only for SELL-transactions
+	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @return The same as method "getAverageAmount" but only for SELL-transactions
+	 */
+	public Map<String, Integer> getAverageAmountSell(String filteredDate) {
+			
+		Map<String, Integer> hmAmount = getTotalAmountSell(filteredDate);
+		Map<String, Integer> hmNo = getTotalTransactionsSell();
+		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
+			
+		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
+		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
+			
+		for (Map.Entry<String, Integer> meAmount : esetAmount)
+			for (Map.Entry<String, Integer> meNo : esetNo)
+				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
+			
+		return resultMap;
+	}
+
 }
