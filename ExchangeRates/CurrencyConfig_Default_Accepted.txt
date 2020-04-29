@@ -1,0 +1,12 @@
+﻿Period		Grupp				Serie		Värde
+0000-00-00;	Valutor mot svenska kronor;	1 AUD;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 CHF;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 CNY;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 DKK;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 EUR;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 GBP;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 INR;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 JPY;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 NOK;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 RUB;		0.0
+0000-00-00;	Valutor mot svenska kronor;	1 USD;		0.0

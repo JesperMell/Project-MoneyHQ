@@ -16,7 +16,7 @@ public class Currency {
 			throw new IllegalArgumentException("Currency Code missing!");
 		}
 		else {
-			if(rate <= 0) {
+			if(rate < 0) {
 				throw new IllegalArgumentException("Exchange rate cant be negative");
 			}
 		}
