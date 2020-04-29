@@ -7,12 +7,10 @@ import static org.junit.Assert.assertTrue;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import affix.java.effective.moneyservice.CLIHelper.Period;
 
 public class TestJUnitStatDay {
 
