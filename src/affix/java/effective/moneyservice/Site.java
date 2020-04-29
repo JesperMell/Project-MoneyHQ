@@ -21,6 +21,9 @@ public class Site {
 	 * @param completedTransactions
 	 */
 	public Site(String siteName) {
+		if(siteName == null || siteName.isEmpty()) {
+			throw new IllegalArgumentException("siteName missing!");
+		}
 		this.siteName = siteName;
 	}
 
@@ -41,20 +44,22 @@ public class Site {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void readTransactions(LocalDate startDate, LocalDate endDate) {
+	public void readTransactions(LocalDate startDate, LocalDate endDate) throws ClassNotFoundException {
 		logger.info("Entering readTransactions method -->");
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
 					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
-			} catch (IOException | ClassNotFoundException ioe) {
-				logger.log(Level.WARNING, "Could not read file! " + ioe);
-				System.out.println("Sorry, could read from file.");
+        
+			} catch (IOException ioe) {
+				System.out.format("No report for %s\n", startDate);
+        logger.log(Level.WARNING, "Could not read file! " + ioe);
+			} catch (ClassNotFoundException ioe) {
+				throw new ClassNotFoundException("Reading error, class missmatch" + ioe);
 			}
 			startDate = startDate.plusDays(1);
 		} while (!startDate.equals(endDate));
 		logger.info("Exiting readTransaction method <--");
 	}
-
 }
