@@ -1,3 +1,4 @@
+Period      	Grupp				Serie		Värde				
 2020-04-22;Valutor mot svenska kronor;1 AUD;6.3874
 2020-04-22;Valutor mot svenska kronor;100 CHF;1040.5481
 2020-04-22;Valutor mot svenska kronor;1 CNY;1.4238
