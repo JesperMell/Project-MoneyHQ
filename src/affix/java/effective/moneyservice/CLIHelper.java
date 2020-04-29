@@ -81,18 +81,32 @@ public class CLIHelper {
 			}
 		}
 		
-//		
-//		result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
-//			Map<String, Integer> profit, amountBuy, amountSell, total = new HashMap<>();
-//			System.out.println(k);
-//			v.forEach((s) -> {
-//				System.out.println();
-//				profit.forEach((, ) -> );
-//				amountBuy += s.getAmountBuy();
-//				amountSell += s.getAmountSell();
-//				total += s.getAmountBuy();
-//			});
-//		});
+		
+		result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
+			Map<String, Integer> profit = new HashMap<>();
+			Map<String, Integer> amountBuy = new HashMap<>();
+			Map<String, Integer> amountSell = new HashMap<>();
+			Map<String, Integer> total = new HashMap<>();
+			
+			System.out.println(k);
+			v.forEach((s) -> {
+				System.out.println(s.getDate());
+				System.out.println(s.getProfit());
+				System.out.println(s.getAmountBuy());
+				System.out.println(s.getAmountSell());
+				System.out.println(s.getTotal());
+				
+				s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
+				s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
+				s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
+				s.getTotal().forEach((a, b) -> total.merge(a, b, Integer::sum));
+			});
+			System.out.println("TOTAL:");
+			System.out.println(profit);
+			System.out.println(amountBuy);
+			System.out.println(amountSell);
+			System.out.println(total);
+		});
 
 		// Display Statistics for all sites.
 		System.out.println("ALL");
