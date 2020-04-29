@@ -48,7 +48,7 @@ public class Site {
 		logger.info("Entering readTransactions method -->");
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
+					new FileInputStream(String.format("Reports/Report_%s_%s.ser", siteName, startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
         

@@ -29,7 +29,11 @@ public class TestJUnitStatistic {
 		
 		Site testSite = new Site("TestSite");
 		
-		testSite.readTransactions(startDate, endDate);
+		try {
+			testSite.readTransactions(startDate, endDate);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		testTrans = testSite.getCompletedTransactions();
 		
 		testTrans.forEach(System.out::println);
@@ -165,7 +169,7 @@ public class TestJUnitStatistic {
 	public void testGetTotalBuy() {
 		
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
-		Map<String, Integer> resultMap = testStats.getTotalBuy("2020-04-01");
+		Map<String, Integer> resultMap = testStats.getTotalAmountBuy("2020-04-01");
 		
 		assertTrue(16521 == resultMap.get("GBP"));
 	}
@@ -174,7 +178,7 @@ public class TestJUnitStatistic {
 	public void testGetTotalSell() {
 		
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
-		Map<String, Integer> resultMap = testStats.getTotalSell("2020-04-01");
+		Map<String, Integer> resultMap = testStats.getTotalAmountSell("2020-04-01");
 		
 		assertTrue(11743 == resultMap.get("GBP"));
 	}
