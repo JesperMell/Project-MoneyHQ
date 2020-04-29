@@ -18,7 +18,6 @@ public class TestJUnitStatistic {
 
 	private List<Transaction> testTransactionList = new ArrayList<>();
 	private List<String> testCurrencyCodes = new ArrayList<>();
-	private Map<String, Currency> testCurrencyMap = new HashMap<>();
 	private static List<Transaction> testTrans = new ArrayList<>();
 
 	@BeforeClass
@@ -27,7 +26,7 @@ public class TestJUnitStatistic {
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 03);
 		
-		Site testSite = new Site("TestSite");
+		Site testSite = new Site("CENTER");
 		
 		try {
 			testSite.readTransactions(startDate, endDate);

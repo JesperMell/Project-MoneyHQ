@@ -30,7 +30,7 @@ public class TestJUnitSite {
 	
 	@Test
 	public void testReadTransactions_1() {
-		Site s1 = new Site("TestName");
+		Site s1 = new Site("CENTER");
 		
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 02);
@@ -47,7 +47,7 @@ public class TestJUnitSite {
 	
 	@Test
 	public void testReadTransactions_2() {
-		Site s1 = new Site("TestName");
+		Site s1 = new Site("CENTER");
 		
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 06);
