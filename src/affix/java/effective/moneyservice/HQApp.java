@@ -37,7 +37,7 @@ public class HQApp {
 		logger.setLevel(Level.ALL);
 		// Create a new Handler for console.
 		ConsoleHandler consHandler = new ConsoleHandler();
-		consHandler.setLevel(Level.WARNING);
+		consHandler.setLevel(Level.SEVERE);
 		logger.addHandler(consHandler);
 		
 		try {
@@ -89,6 +89,7 @@ public class HQApp {
 	}
 	
 	private static Map<String, Integer> createProfitStatistics(Statistic stats) {
+		//logger.info("Entering createProfitStatistics method -->");
 		Map<String, Integer> resultMap = new HashMap<>();
 		Map<String, Integer> dayResultMap = new HashMap<>();
 		Set<String> dateList = new TreeSet<>();
@@ -110,7 +111,7 @@ public class HQApp {
 				}
 			}
 		}
-
+		//logger.info("Exiting createProfitStatistics method <--");
 		return resultMap;
 	}
 	
@@ -120,6 +121,7 @@ public class HQApp {
 	
 	
 	public static Map<String, Currency> readCurrencyConfigFile(String filename) {
+		logger.info("Entering readCurrencyConfigFIle method -->");
 		int lineNumber = 1;
 		Map<String, Currency> tempMap = new HashMap<>();
 		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
@@ -134,8 +136,10 @@ public class HQApp {
 			}
 		}
 		catch (IOException ioe) {
+			logger.log(Level.WARNING, "Could not read CurrencyConfig file properly! " + ioe);
 			System.out.println("An IOException occurred for file ");
 		}
+		logger.info("Exiting readCurrencyConfigFIle method <--");
 		return tempMap;
 	}
 	
