@@ -62,6 +62,7 @@ public class HQApp {
 		else {
 			currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_Default_Accepted.txt");
 		}
+		logger.info("-------Configuration_Ends-------\n");
 		CLIapplication();
 	}
 
@@ -87,10 +88,12 @@ public class HQApp {
 			default:
 				System.out.println("Not a valid menu choice!");
 			}
+			logger.info("-------Task_Done-------\n");
 		}while(!done);
 	}
 
 	private static int HQmenu() {
+		logger.info("Entering HQmenu method -->");
 		int choice = 0;
 		boolean ok;
 		do {
@@ -108,15 +111,18 @@ public class HQApp {
 			try {
 				choice = Integer.parseInt(userChoice);
 			}catch(NumberFormatException e) {
+				logger.log(Level.SEVERE, "choice: " + choice + " made exception! " + e);
 				System.out.format("Your choice %s is not accepted!", userChoice);
 				ok = false;
 			}
 		}while(!ok);
-
+		
+		logger.info("Exiting HQmenu method <--");
 		return choice;
 	}
 
 	private static Site createNewSite() {
+		logger.info("Entering createNewSite method -->");
 		Site newSite = null;
 		boolean ok;
 		
@@ -128,11 +134,13 @@ public class HQApp {
 				newSite = new Site(siteName.toUpperCase());
 			}
 			catch (IllegalArgumentException e) {
+				logger.log(Level.SEVERE, "Site generation exception! " + e);
 				System.out.println("The name can not be empty");
 				ok = false;
 			}
 		} while (!ok);
 		
+		logger.info("Exiting createNewSite method <--");
 		return newSite;
 	}
 
