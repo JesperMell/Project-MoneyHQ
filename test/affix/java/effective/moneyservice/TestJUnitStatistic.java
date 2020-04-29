@@ -235,4 +235,21 @@ public class TestJUnitStatistic {
 		
 		assertTrue(141 == resultMap.get("GBP"));
 	}
+	
+	@Test
+	public void testGetAverageAmountBuy() {
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountBuy();
+		
+		assertTrue(550 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetAverageAmountSell() {
+		
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountSell();
+		
+		assertTrue(600 == resultMap.get("GBP"));
+	}
 }
