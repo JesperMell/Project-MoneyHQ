@@ -22,8 +22,14 @@ import java.util.stream.Collectors;
  */
 public class CLIHelper {
 
+	/**
+	 * Variable for keyboard input
+	 */
 	static Scanner input = new Scanner(System.in);
 	
+	/**
+	 * A logger object
+	 */
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	/**
