@@ -1,22 +1,47 @@
 package affix.java.effective.moneyservice;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * This is the currency class
+ * 
+ * @author Group Center
+ *
+ */
 public class Currency {
 	
+	/**
+	 * String holding the name for the currency
+	 */
 	private final String currencyCode;
+	/**
+	 * The exchange rate for the specific currency
+	 */
 	private final double exchangeRate;
+	
+	/**
+	 * A logger object
+	 */
+	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 	
 	
 	/**
 	 * @param currencyCode String holding the codename of a Currency
 	 * @param rate double holding the value of the exchange rate to local currency
+	 * @throws java.lang.IllegalArgumentException if 
+	 *         * currency code is missing
+	 *         * Exchange rate is negative
 	 */
 	public Currency(String currencyCode, double rate) {
 		
 		if(currencyCode == null || currencyCode.isEmpty()) {
+			logger.log(Level.SEVERE, "CurrencyCode is empty or null! ");
 			throw new IllegalArgumentException("Currency Code missing!");
 		}
 		else {
 			if(rate < 0) {
+				logger.log(Level.SEVERE, "Negative exchange rate! ");
 				throw new IllegalArgumentException("Exchange rate cant be negative");
 			}
 		}

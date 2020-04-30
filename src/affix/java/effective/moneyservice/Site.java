@@ -16,8 +16,17 @@ import java.util.logging.Logger;
  */
 public class Site {
 	
+	/**
+	 * A string holding the name of the specific site
+	 */
 	private final String siteName;
+	/**
+	 * A list holding a number of transaction objects
+	 */
 	private List<Transaction> completedTransactions = new ArrayList<>();
+	/**
+	 * A logger object
+	 */
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 	
 	
@@ -27,6 +36,7 @@ public class Site {
 	 */
 	public Site(String siteName) {
 		if(siteName == null || siteName.isEmpty()) {
+			logger.log(Level.SEVERE, "Site name is null or empty! ");
 			throw new IllegalArgumentException("siteName missing!");
 		}
 		this.siteName = siteName;
