@@ -349,7 +349,7 @@ public class Statistic {
 	 * Method for calculating the profit in the reference currency for each currency per day
 	 * Reading the exchange rates from file based on date.
 	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
-	 * @return Map holding the result of calculation with profit in each currency per day in List<Transaction>
+	 * @return Map holding the result of calculation with profit in each currency per day in List{@code<Transaction>}
 	 */
 	public Map<String, Integer> getProfit(String filteredDate) {
 		
@@ -386,9 +386,6 @@ public class Statistic {
 
 	
 	/**
-	 * The same as method "getAverageAmount" but only for BUY-transactions
-	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
-	 * @return The same as method "getAverageAmount" but only for BUY-transactions
 	 * Method for calculating the average amount for buy transactions
 	 * @return a resulting map holding the calculated average for each currency for BUY-transactions
 	 */
@@ -426,9 +423,6 @@ public class Statistic {
 	}
 
 	/**
-	 * The same as method "getAverageAmount" but only for SELL-transactions
-	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
-	 * @return The same as method "getAverageAmount" but only for SELL-transactions
 	 * Method for calculating the average amount for sell transactions
 	 * @return a resulting map holding the calculated average for each currency for SELL-transactions
 	 */

@@ -89,7 +89,7 @@ public class HQApp {
 
 	/**
 	 * This method supports user interaction via CLI,
-	 * methods "HQmenu()" & "creatNewSite()"
+	 * methods "HQmenu()" and "creatNewSite()"
 	 */
 	private static void CLIapplication() {
 
