@@ -17,14 +17,35 @@ import java.util.logging.Logger;
 public class Statistic {
 
 
+	/**
+	 * Variable used to get the exchange rate when exchanging one currency to another
+	 */
 	private static final double BUY_RATE = 0.995;
+	/**
+	 * Variable used to get the exchange rate when exchanging one currency to another
+	 */
 	private static final double SELL_RATE = 1.005;
+	/**
+	 * The profit made from an transaction
+	 */
 	private static final double PROFIT_MARGIN_RATE = 0.005;
 
+	/**
+	 * List holding a number of transaction objects
+	 */
 	private List<Transaction> transactions = new ArrayList<>();
+	/**
+	 * List holding all the currencyCodes
+	 */
 	private List<String> currencyCodes = new ArrayList<>();
+	/**
+	 * The name of this specific site
+	 */
 	private String siteName;
 	
+	/**
+	 * A logger object
+	 */
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	/**
