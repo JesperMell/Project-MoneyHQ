@@ -68,6 +68,7 @@ public class CLIHelper {
 			try {
 				s.readTransactions(startDay.get(), endDay);
 			} catch (ClassNotFoundException e1) {
+				logger.log(Level.SEVERE, "Site exception! " + e1);
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
