@@ -388,41 +388,6 @@ public class Statistic {
 		return resultMap;
 	}
 
-
-	//	public Map<String, Integer> getTransactionCountPerCurrency() {
-	//		
-	//	}
-
-	//		public Map<String, Integer> getAverageAmount() {
-	//			
-	//			Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
-	//			Map<String, Integer> hmNo = getTotalTransactions();
-	//		}
-
-	
-	
-	/**
-	 * Get the average amount for each currency in the chosen reference currency
-	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
-	 * @return Map with currency code as key and an average amount for each currency in reference currency as value
-	 */
-	public Map<String, Integer> getAverageAmount(String filteredDate) {
-			
-		Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
-		Map<String, Integer> hmNo = getTotalTransactions();
-		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
-			
-		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
-		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
-			
-		for (Map.Entry<String, Integer> meAmount : esetAmount)
-			for (Map.Entry<String, Integer> meNo : esetNo)
-				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
-			
-		logger.info("Total profit from every currency: " + resultMap);
-		logger.info("Exiting getProfit method <--");
-		return resultMap;
-	}
 	
 	/**
 	 * The same as method "getAverageAmount" but only for BUY-transactions
