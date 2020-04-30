@@ -1,6 +1,7 @@
 package affix.java.effective.moneyservice;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,8 @@ import java.util.stream.IntStream;
 public class CLIHelper {
 
 	static Scanner input = new Scanner(System.in);
-
+	
+	private static int DISPLAY_COLUMN_WIDTH = 20;
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	enum Period {
@@ -80,13 +82,14 @@ public class CLIHelper {
 			try {
 				s.readTransactions(startDay.get(), endDay);
 			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				logger.severe("Could not read Transactions from CLIHelper");
+				System.out.println("Something went wrong!");
 			}
 			statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
 		}
 
 		// Display Statistics for each site
+		// and create StatDay for each day.
 		List<StatDay> result = new ArrayList<>();
 
 		for (Statistic s : statistics) {
@@ -100,17 +103,20 @@ public class CLIHelper {
 				result.add(stat);
 			}
 
+			// Show Transactions.
 			if (display_option.get().equals(DisplayOption.TRANSACTIONS)
 					|| display_option.get().equals(DisplayOption.BOTH)) {
-				System.out.println(String.format("Transactions for %s", s.getSiteName()));
-				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY"));
+				System.out.println(String.format("----- Transactions for %s -----", s.getSiteName()));
+				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY", "TIMESTAMP"));
 				s.getTransactions().forEach(t -> {
 					headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "", t.getMode().toString(),
-							String.valueOf(t.getAmount()), t.getCurrencyCode()));
+							String.valueOf(t.getAmount()), t.getCurrencyCode(),
+							DateTimeFormatter.ofPattern("YYYY-MM-dd h:m:s").format(t.getTimeStamp())));
 				});
 			}
 		}
 
+		// Show Statistics.
 		if (display_option.get().equals(DisplayOption.STATISTICS) || display_option.get().equals(DisplayOption.BOTH)) {
 			result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
 				Map<String, Integer> profit = new HashMap<>();
@@ -168,11 +174,11 @@ public class CLIHelper {
 							return s2;
 						})).get("ALL");
 
+				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY"));
 				rowDisplayer(Arrays.asList(l1, l2, l3, l4));
 			}
 		}
 		System.out.println("\n----- END -----");
-
 	}
 
 	/**
@@ -231,7 +237,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering what the output should present.
 	 * 
-	 * @return Optional<LocalDate>
+	 * @return Optional<DisplayOption>
 	 */
 	private static Optional<DisplayOption> readDisplayOption() {
 		logger.info("Entering readDisplayOption -->");
@@ -350,7 +356,7 @@ public class CLIHelper {
 		titles.forEach(s -> {
 			StringBuilder sb = new StringBuilder();
 			sb.append(s);
-			IntStream.range(0, 18 - sb.length()).forEachOrdered(n -> {
+			IntStream.range(0, DISPLAY_COLUMN_WIDTH - sb.length()).forEachOrdered(n -> {
 				sb.append(" ");
 			});
 			sb.append("|");
@@ -365,7 +371,7 @@ public class CLIHelper {
 			for (Map<String, Integer> map : list) {
 				StringBuilder column = new StringBuilder();
 				column.append(String.format("%s: %d", c, map.get(c)));
-				IntStream.range(0, 18 - column.length()).forEachOrdered(n -> {
+				IntStream.range(0, DISPLAY_COLUMN_WIDTH - column.length()).forEachOrdered(n -> {
 					column.append(" ");
 				});
 				column.append("|");
