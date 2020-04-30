@@ -105,6 +105,10 @@ public class HQApp {
 				sites.putIfAbsent(newSite.getSiteName(), newSite);
 				break;
 			case 2:
+				if(sites.isEmpty()) {
+					System.out.println("You need to register site(s) first.");
+					break;
+				}
 				CLIHelper.menuInput();
 				break;
 			case 0:
