@@ -24,7 +24,7 @@ public class Transaction implements java.io.Serializable{
 	 * @param currencyCode - a list of currency codes
 	 * @param amount - an int holding the validated order amount
 	 * @param mode - a TransactionMode holding the type of the validated order
-	 * @throws java.lang.IllegalArgumentException if currency code is missing or the amount is too low
+	 * @throws java.lang.IllegalArgumentException if currency code is missing
 	 */
 	public Transaction(String currencyCode, int amount, TransactionMode mode) {
 		this(currencyCode, amount, mode, ++uniqueId);
