@@ -8,23 +8,54 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Statistic generator for producing data
+ * like total amount, quantity, average amount and profit
+ * 
+ * @author Group Center
+ */
 public class Statistic {
 
 
+	/**
+	 * Variable used to get the exchange rate when exchanging one currency to another
+	 */
 	private static final double BUY_RATE = 0.995;
+	/**
+	 * Variable used to get the exchange rate when exchanging one currency to another
+	 */
 	private static final double SELL_RATE = 1.005;
+	/**
+	 * The profit made from an transaction
+	 */
 	private static final double PROFIT_MARGIN_RATE = 0.005;
 
+	/**
+	 * List holding a number of transaction objects
+	 */
 	private List<Transaction> transactions = new ArrayList<>();
+	/**
+	 * List holding all the currencyCodes
+	 */
 	private List<String> currencyCodes = new ArrayList<>();
+	/**
+	 * The name of this specific site
+	 */
 	private String siteName;
 	
+	/**
+	 * A logger object
+	 */
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	/**
-	 * @param transactions
-	 * @param currencyCodes
-	 * @param siteName
+	 * @param transactions - a list of transactions
+	 * @param currencyCodes - a list of currency codes
+	 * @param siteName - a String holding the site name, like "NORTH", "CENTER", "SOUTH" etc..
+	 * @throws java.lang.IllegalArgumentException if
+	 *         * No transactions provided
+	 *         * Missing currency codes
+	 *         * Missing site name
 	 */
 	public Statistic(List<Transaction> transactions, List<String> currencyCodes, String siteName) {
 		logger.info("Entering Statistics constructor -->");
@@ -74,7 +105,7 @@ public class Statistic {
 	
 	/**
 	 * Get the total amount for each currency in the chosen reference currency
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return Map with an amount for each currency in reference currency
 	 */
 	public Map<String, Integer> getTotalAmount(String filteredDate) {
@@ -118,7 +149,7 @@ public class Statistic {
 
 	/**
 	 * The same as method "getTotalAmount" filtered for only BUY-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for BUY-transactions
 	 */
 	public Map<String, Integer> getTotalAmountBuy(String filteredDate) {
@@ -155,7 +186,7 @@ public class Statistic {
 
 	/**
 	 * The same as method "getTotalAmount" filtered for only SELL-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return The same as method "getTotalAmount" filtered for SELL-transactions
 	 */
 	public Map<String, Integer> getTotalAmountSell(String filteredDate) {
@@ -192,7 +223,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactions() {
@@ -221,7 +251,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed buy transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsBuy() {
@@ -251,7 +280,6 @@ public class Statistic {
 
 	/**
 	 * Method for calculating number of completed sell transactions done of each currency
-	 * @param none
 	 * @return Map holding the result of calculation
 	 */
 	public Map<String, Integer> getTotalTransactionsSell() {
@@ -282,7 +310,6 @@ public class Statistic {
 	/**
 	 * Method for calculating the difference of between sold and bought amount 
 	 * in each currency
-	 * @param none
 	 * @return Map holding the result of calculation in each currency
 	 */
 	public Map<String, Integer> getDiffCurrency() {
@@ -321,7 +348,7 @@ public class Statistic {
 	/**
 	 * Method for calculating the profit in the reference currency for each currency per day
 	 * Reading the exchange rates from file based on date.
-	 * @param A string holding a date in the format of YYYY-MM-DD
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
 	 * @return Map holding the result of calculation with profit in each currency per day in List<Transaction>
 	 */
 	public Map<String, Integer> getProfit(String filteredDate) {
@@ -342,31 +369,26 @@ public class Statistic {
 			Currency temp = HQApp.currencyMap.get(code);
 
 			// Convert BUY transactions into reference currency and sum them up
-			Integer sumBuyAmount = transactions.stream()
+			Integer sumAmount = transactions.stream()
 					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
-					.filter(t -> t.getMode().equals(TransactionMode.BUY))												// Filter on TransactionMode
 					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
 					.reduce(0, Integer::sum);																			// Sum up the amount into total bought in reference currency
 
-			Integer sumSellAmount = transactions.stream()
-					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
-					.filter(t -> t.getMode().equals(TransactionMode.SELL))												// Filter on TransactionMode
-					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
-					.reduce(0, Integer::sum);																			// Sum up the amount into total sold in reference currency
-
 			// Calculate the total profit from the sold amount and the bought amount based on profit margin
-			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * PROFIT_MARGIN_RATE));
+			Integer profit = (int) Math.round((sumAmount * PROFIT_MARGIN_RATE));
 
 			resultMap.putIfAbsent(code, profit);
 		}
-		logger.info("Total profit from every currency: " + resultMap);
-		logger.info("Exiting getProfit method <--");
+    
 		return resultMap;
 	}
+
 	
 	/**
+	 * The same as method "getAverageAmount" but only for BUY-transactions
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
+	 * @return The same as method "getAverageAmount" but only for BUY-transactions
 	 * Method for calculating the average amount for buy transactions
 	 * @return a resulting map holding the calculated average for each currency for BUY-transactions
 	 */
@@ -404,6 +426,9 @@ public class Statistic {
 	}
 
 	/**
+	 * The same as method "getAverageAmount" but only for SELL-transactions
+	 * @param filteredDate - a string holding a date in the format of YYYY-MM-DD
+	 * @return The same as method "getAverageAmount" but only for SELL-transactions
 	 * Method for calculating the average amount for sell transactions
 	 * @return a resulting map holding the calculated average for each currency for SELL-transactions
 	 */

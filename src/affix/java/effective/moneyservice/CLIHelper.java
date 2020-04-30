@@ -17,6 +17,12 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * This is a support class for user interaction using CLI
+ * 
+ * @author Group Center
+ *
+ */
 public class CLIHelper {
 	/**
 	 * Reads user input.
@@ -36,6 +42,7 @@ public class CLIHelper {
 
 	/**
 	 * Alternatives for which period to use for calculating end date.
+	 * In the menu input we choose a period type
 	 * 
 	 * @author jesper
 	 *
@@ -80,7 +87,7 @@ public class CLIHelper {
 	 * menuInput.
 	 * 
 	 * Main method for user to enter values.
-	 * 
+	 * @return int - an int equal to 0
 	 */
 	static void menuInput() {
 		logger.info("Entering menuInput method -->");
@@ -137,7 +144,7 @@ public class CLIHelper {
 			try {
 				s.readTransactions(startDay.get(), endDay);
 			} catch (ClassNotFoundException e1) {
-				logger.severe("Could not read Transactions from CLIHelper");
+				logger.log(Level.SEVERE, "Site exception! " + e1);
 				System.out.println("Something went wrong!");
 			}
 			statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
@@ -252,8 +259,8 @@ public class CLIHelper {
 	 * 
 	 * Returns a set with the selected site names.
 	 * 
-	 * @return Set<Site>
-	 */
+	 * @return Set<String> - a Set with the selected site names
+   */
 	private static Set<Site> readSites() {
 		logger.info("Entering readSites method -->");
 		System.out.println("Choose a Site (For multiple choices use comma seperation)");
@@ -326,7 +333,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering start date.
 	 * 
-	 * @return Optional<LocalDate>
+	 * @return Optional<LocalDate> - a LocalDate in the format YYYY-MM-DD if available
 	 */
 	private static Optional<LocalDate> readStartDay() {
 		logger.info("Entering readStartDay -->");
@@ -346,7 +353,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering Period.
 	 * 
-	 * @return Optional<Period>
+	 * @return Optional<Period> - a Period if available
 	 */
 	private static Optional<Period> readPeriod() {
 		logger.info("Entering readPeriod method -->");
@@ -372,7 +379,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for selecting currencies.
 	 * 
-	 * @return Optional<String>
+	 * @return Optional<String> - a String with currency code if available
 	 */
 	private static List<String> readCurrencyCodes() {
 		logger.info("Entering readCurrencyCodes method -->");
@@ -403,10 +410,10 @@ public class CLIHelper {
 	 * 
 	 * Calculates the endDate for startDate and Period.
 	 * 
-	 * @param periodOption - What to append to startDay.
-	 * @param startDay - The LocalDate which will be appended.
-	 * @return LocalDate
-	 */
+	 * @param period - an enum type
+	 * @param startDate - a start date in the format YYYY-MM-DD
+	 * @return LocalDate - an end date in the format YYYY-MM-DD
+   */
 	static LocalDate createEndDay(Optional<Period> periodOption, Optional<LocalDate> startDay) {
 		switch (periodOption.get()) {
 		case DAY:
