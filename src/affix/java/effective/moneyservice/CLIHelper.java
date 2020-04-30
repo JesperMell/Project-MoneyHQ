@@ -157,7 +157,7 @@ public class CLIHelper {
 			try {
 				statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
 			} catch (IllegalArgumentException e) {
-				logger.log(Level.SEVERE, "Statistics exception! " + e);
+				logger.log(Level.WARNING, "Statistics exception! " + e);
 				System.out.println(
 						String.format("%s does not have any transactions and won't be included", s.getSiteName()));
 			}
