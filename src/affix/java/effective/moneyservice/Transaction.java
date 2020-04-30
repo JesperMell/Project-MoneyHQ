@@ -115,5 +115,9 @@ public class Transaction implements java.io.Serializable{
 		return mode;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return String.format("Transaction [id=%s, currencyCode=%s, amount=%s, mode=%s, timeStamp=%s]", id, currencyCode,
+				amount, mode, timeStamp);
+	}
 }
