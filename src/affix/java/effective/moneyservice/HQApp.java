@@ -140,8 +140,8 @@ public class HQApp {
 			try {
 				choice = Integer.parseInt(userChoice);
 			}catch(NumberFormatException e) {
-				logger.log(Level.SEVERE, "choice: " + choice + " made exception! " + e);
-				System.out.format("Your choice %s is not accepted!", userChoice);
+				logger.log(Level.WARNING, "choice: " + choice + " made exception! " + e);
+				System.out.format("Your choice %s is not accepted!\n", userChoice);
 				ok = false;
 			}
 		}while(!ok);
