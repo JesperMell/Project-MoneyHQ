@@ -9,6 +9,9 @@ public class Currency {
 	/**
 	 * @param currencyCode String holding the codename of a Currency
 	 * @param rate double holding the value of the exchange rate to local currency
+	 * @throws java.lang.IllegalArgumentException if 
+	 *         * currency code is missing
+	 *         * Exchange rate is negative
 	 */
 	public Currency(String currencyCode, double rate) {
 		

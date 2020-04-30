@@ -31,6 +31,10 @@ public class Statistic {
 	 * @param transactions - a list of transactions
 	 * @param currencyCodes - a list of currency codes
 	 * @param siteName - a String holding the site name, like "NORTH", "CENTER", "SOUTH" etc..
+	 * @throws java.lang.IllegalArgumentException if
+	 *         * No transactions provided
+	 *         * Missing currency codes
+	 *         * Missing site name
 	 */
 	public Statistic(List<Transaction> transactions, List<String> currencyCodes, String siteName) {
 		logger.info("Entering Statistics constructor -->");

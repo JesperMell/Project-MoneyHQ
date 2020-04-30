@@ -66,6 +66,10 @@ public class HQApp {
 		CLIapplication();
 	}
 
+	/**
+	 * This method supports user interaction via CLI,
+	 * methods "HQmenu()" & "creatNewSite()"
+	 */
 	private static void CLIapplication() {
 
 		boolean done = false;
@@ -92,6 +96,10 @@ public class HQApp {
 		}while(!done);
 	}
 
+	/**
+	 * A menu for user choice of operation 
+	 * @return int - an int based on the user input
+	 */
 	private static int HQmenu() {
 		logger.info("Entering HQmenu method -->");
 		int choice = 0;
@@ -121,6 +129,10 @@ public class HQApp {
 		return choice;
 	}
 
+	/**
+	 * Creating a new Site from a Scanner input
+	 * @return Site - a Site based on the input from the user
+	 */
 	private static Site createNewSite() {
 		logger.info("Entering createNewSite method -->");
 		Site newSite = null;
@@ -145,9 +157,10 @@ public class HQApp {
 	}
 	
 	/**
-	 * Read the contents in the currency config file
+	 * Read the contents in a currency config file
+	 * and convert the contents to a map with currency code as key
 	 * @param filename - a currency config text file name
-	 * @return a Map with currency code as key and exchange rate as value 
+	 * @return a Map with currency code as key and Currency as value 
 	 */
 
 	public static Map<String, Currency> readCurrencyConfigFile(String filename) {
@@ -178,9 +191,10 @@ public class HQApp {
 	}
 
 	/**
-	 * A helper method to split up the parts in the currency config files
-	 * @param input - each row from the text file
-	 * @return Currency (a currency code and a exchange rate)
+	 * A helper method to split up the parts in a text file
+	 * and convert it to a Currency
+	 * @param input - a String holding raw data
+	 * @return Currency - a Currency based on parsed input
 	 */
 	private static Currency parseInput(String input) {
 

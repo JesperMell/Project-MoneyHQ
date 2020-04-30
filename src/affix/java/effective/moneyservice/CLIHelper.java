@@ -37,7 +37,7 @@ public class CLIHelper {
 	 * menuInput.
 	 * 
 	 * Main method for user to enter values.
-	 * @return int - equal to 0
+	 * @return int - an int equal to 0
 	 */
 	static void menuInput() {
 		logger.info("Entering menuInput method -->");
@@ -174,7 +174,7 @@ public class CLIHelper {
 	 * 
 	 * Returns a list with the selected site names.
 	 * 
-	 * @return Set<String> - a list with the selected site names
+	 * @return Set<String> - a Set with the selected site names
 	 */
 	private static Set<Site> readSites() {
 		logger.info("Entering readSites method -->");
