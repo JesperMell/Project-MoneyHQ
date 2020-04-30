@@ -30,8 +30,7 @@ public class CLIHelper {
 	static Scanner input = new Scanner(System.in);
 
 	/**
-	 * The width of column which {@link headDisplayer} and {@link rowDisplayer} uses
-	 * when building row/table string.
+	 * The width of column when rendering output.
 	 */
 	private static int DISPLAY_COLUMN_WIDTH = 20;
 
@@ -88,7 +87,6 @@ public class CLIHelper {
 	 * 
 	 * Main method for user to enter values.
 	 * 
-	 * @return int - an int equal to 0
 	 */
 	static void menuInput() {
 		logger.info("Entering menuInput method -->");
@@ -428,8 +426,8 @@ public class CLIHelper {
 	 * 
 	 * Calculates the endDate for startDate and Period.
 	 * 
-	 * @param period    - an enum type
-	 * @param startDate - a start date in the format YYYY-MM-DD
+	 * @param periodOption    - an enum type
+	 * @param startDay - a start date in the format YYYY-MM-DD
 	 * @return LocalDate - an end date in the format YYYY-MM-DD
 	 */
 	static LocalDate createEndDay(Optional<Period> periodOption, Optional<LocalDate> startDay) {
