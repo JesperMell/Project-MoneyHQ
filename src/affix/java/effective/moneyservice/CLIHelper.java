@@ -18,18 +18,62 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CLIHelper {
-
+	/**
+	 * Reads user input.
+	 */
 	static Scanner input = new Scanner(System.in);
-	
+
+	/**
+	 * The width of column which {@link headDisplayer} and {@link rowDisplayer} uses
+	 * when building row/table string.
+	 */
 	private static int DISPLAY_COLUMN_WIDTH = 20;
+
+	/**
+	 * The main logger object.
+	 */
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
+	/**
+	 * Alternatives for which period to use for calculating end date.
+	 * 
+	 * @author jesper
+	 *
+	 */
 	enum Period {
-		DAY, WEEK, MONTH
+		/**
+		 * Represents a single day.
+		 */
+		DAY, 
+		/**
+		 * Represents a week.
+		 */
+		WEEK, 
+		/**
+		 * Represents a month.
+		 */
+		MONTH
 	};
 
+	/**
+	 * Alternatives for render output.
+	 * 
+	 * @author jesper
+	 *
+	 */
 	enum DisplayOption {
-		STATISTICS, TRANSACTIONS, BOTH
+		/**
+		 * Limit to only render statistics.
+		 */
+		STATISTICS, 
+		/**
+		 * Limit to only render transactions.
+		 */
+		TRANSACTIONS, 
+		/**
+		 * Render both statistics and transactions. 
+		 */
+		BOTH
 	};
 
 	/**
@@ -40,10 +84,19 @@ public class CLIHelper {
 	 */
 	static void menuInput() {
 		logger.info("Entering menuInput method -->");
+		// Set with the selected sites by user.
 		Set<Site> sites;
+		
+		// The input for start of the period. (YYYY-MM-DD).
 		Optional<LocalDate> startDay;
+		
+		// Selected period to use for computing the endDay.
 		Optional<Period> periodOption;
+		
+		// The selected currencies
 		List<String> currencies;
+		
+		// The selected alternative on what to render.
 		Optional<DisplayOption> display_option;
 
 		// Choose Site.
@@ -71,8 +124,10 @@ public class CLIHelper {
 		// Choose Display Option.
 		do {
 			display_option = readDisplayOption();
+			logger.info("Exiting readDisplayOption <--");
 		} while (display_option.isEmpty());
 
+		// Compute the endDay.
 		LocalDate endDay = createEndDay(periodOption, startDay);
 
 		// Create Statistics
@@ -88,8 +143,8 @@ public class CLIHelper {
 			statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
 		}
 
-		// Display Statistics for each site
-		// and create StatDay for each day.
+		// Create and set StatDay for each day.
+		// Fill them with corresponding values from statistics list.
 		List<StatDay> result = new ArrayList<>();
 
 		for (Statistic s : statistics) {
@@ -107,11 +162,11 @@ public class CLIHelper {
 			if (display_option.get().equals(DisplayOption.TRANSACTIONS)
 					|| display_option.get().equals(DisplayOption.BOTH)) {
 				System.out.println(String.format("----- Transactions for %s -----", s.getSiteName()));
-				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY", "TIMESTAMP"));
+				System.out.println(headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY", "TIMESTAMP")));
 				s.getTransactions().forEach(t -> {
-					headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "", t.getMode().toString(),
-							String.valueOf(t.getAmount()), t.getCurrencyCode(),
-							DateTimeFormatter.ofPattern("YYYY-MM-dd h:m:s").format(t.getTimeStamp())));
+					System.out.println(headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "",
+							t.getMode().toString(), String.valueOf(t.getAmount()), t.getCurrencyCode(),
+							DateTimeFormatter.ofPattern("YYYY-MM-dd h:m:s").format(t.getTimeStamp()))));
 				});
 			}
 		}
@@ -119,6 +174,7 @@ public class CLIHelper {
 		// Show Statistics.
 		if (display_option.get().equals(DisplayOption.STATISTICS) || display_option.get().equals(DisplayOption.BOTH)) {
 			result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
+				// Maps for calculating "total for all days" row.
 				Map<String, Integer> profit = new HashMap<>();
 				Map<String, Integer> amountBuy = new HashMap<>();
 				Map<String, Integer> amountSell = new HashMap<>();
@@ -128,17 +184,23 @@ public class CLIHelper {
 				v.forEach((s) -> {
 
 					System.out.println("\n" + s.getDate());
-					headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell"));
-					rowDisplayer(Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal()));
+					System.out.println(
+							headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
+					System.out.println(rowDisplayer(
+							Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal())));
 
 					s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
 					s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
 					s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
 					s.getTotal().forEach((a, b) -> total.merge(a, b, Integer::sum));
 				});
+				
+				// Total for all days row.
 				if (v.size() > 1) {
 					System.out.println("\nTOTAL");
-					rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total));
+					System.out.println(
+							headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
+					System.out.println(rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total)));
 				}
 			});
 
@@ -174,8 +236,9 @@ public class CLIHelper {
 							return s2;
 						})).get("ALL");
 
-				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY"));
-				rowDisplayer(Arrays.asList(l1, l2, l3, l4));
+				System.out
+						.println(headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
+				System.out.println(rowDisplayer(Arrays.asList(l1, l2, l3, l4)));
 			}
 		}
 		System.out.println("\n----- END -----");
@@ -187,9 +250,9 @@ public class CLIHelper {
 	 * Display menu for selecting sites. The user can select 1 to n sites, choose
 	 * 'ALL' option to select all sites.
 	 * 
-	 * Returns a list with the selected site names.
+	 * Returns a set with the selected site names.
 	 * 
-	 * @return Set<String>
+	 * @return Set<Site>
 	 */
 	private static Set<Site> readSites() {
 		logger.info("Entering readSites method -->");
@@ -204,6 +267,7 @@ public class CLIHelper {
 			System.out.println(String.format("%d: %s", ++i, site.getSiteName()));
 		}
 		System.out.println(String.format("%d: %s", ++i, "ALL"));
+		System.out.print("Enter your choice: ");
 
 		// The TreeList where the selected sites
 		// should be appended to.
@@ -246,6 +310,7 @@ public class CLIHelper {
 		for (DisplayOption d : DisplayOption.values()) {
 			System.out.println(String.format("%d: %s", ++i, d));
 		}
+		System.out.print("Enter your choice: ");
 
 		try {
 			return Optional.of(DisplayOption.values()[input.nextInt() - 1]);
@@ -266,6 +331,7 @@ public class CLIHelper {
 	private static Optional<LocalDate> readStartDay() {
 		logger.info("Entering readStartDay -->");
 		System.out.println("Enter start day of Period");
+		System.out.print("Enter (YYYY-MM-DD): ");
 		try {
 			return Optional.of(LocalDate.parse(input.next()));
 		} catch (DateTimeParseException e) {
@@ -283,7 +349,6 @@ public class CLIHelper {
 	 * @return Optional<Period>
 	 */
 	private static Optional<Period> readPeriod() {
-
 		logger.info("Entering readPeriod method -->");
 		int i = 0;
 		System.out.println("Choose a Period");
@@ -311,9 +376,10 @@ public class CLIHelper {
 	 */
 	private static List<String> readCurrencyCodes() {
 		logger.info("Entering readCurrencyCodes method -->");
-		System.out.println("Choose currencies (Use comma as seperator)");
+		System.out.println("Choose currencies (Use comma as separator)");
 		HQApp.currencyMap.keySet().forEach((x) -> System.out.print(x + " "));
 		System.out.println("ALL");
+		System.out.print("Enter your choice (E.g. EUR,SEK): ");
 		String data = input.next();
 
 		List<String> currencies = new ArrayList<>();
@@ -337,9 +403,11 @@ public class CLIHelper {
 	 * 
 	 * Calculates the endDate for startDate and Period.
 	 * 
+	 * @param periodOption - What to append to startDay.
+	 * @param startDay - The LocalDate which will be appended.
 	 * @return LocalDate
 	 */
-	private static LocalDate createEndDay(Optional<Period> periodOption, Optional<LocalDate> startDay) {
+	static LocalDate createEndDay(Optional<Period> periodOption, Optional<LocalDate> startDay) {
 		switch (periodOption.get()) {
 		case DAY:
 			return startDay.get().plusDays(1);
@@ -350,8 +418,16 @@ public class CLIHelper {
 		}
 		return startDay.get();
 	}
+	
+	/**
+	 * Generates a string representing a row.
+	 * Adds spaces as padding and a '|' as separator. 
+	 * 
+	 * @param titles - A list of string to fill the column with.
+	 * @return String
+	 */
 
-	private static void headDisplayer(List<String> titles) {
+	static String headDisplayer(List<String> titles) {
 		StringBuilder row = new StringBuilder();
 		titles.forEach(s -> {
 			StringBuilder sb = new StringBuilder();
@@ -362,10 +438,22 @@ public class CLIHelper {
 			sb.append("|");
 			row.append(sb);
 		});
-		System.out.println(row);
+		return row.toString();
 	}
 
-	private static void rowDisplayer(List<Map<String, Integer>> list) {
+	/**
+	 * Generates a string representing a table.
+	 * Adds spaces as padding, '|' as separator and NewLine 
+	 * character for new line (\n).
+	 * 
+	 * @param list - List of Maps. The First key of each map will render
+	 * as first in each column, which becomes a row. The second key will
+	 * be the second line in each column, which is the second row, and so on.
+	 * 
+	 * @return String
+	 */
+	static String rowDisplayer(List<Map<String, Integer>> list) {
+		StringBuilder table = new StringBuilder();
 		for (String c : list.get(0).keySet()) {
 			StringBuilder row = new StringBuilder();
 			for (Map<String, Integer> map : list) {
@@ -377,20 +465,55 @@ public class CLIHelper {
 				column.append("|");
 				row.append(column);
 			}
-			System.out.println(row);
+			table.append(row + "\n");
 		}
-
+		return table.toString();
 	}
 }
 
+/**
+ * Container for data of transactions for a day.
+ * 
+ * @author jesper
+ *
+ */
 class StatDay {
+	/**
+	 * The sum of profit for a day for each currency.
+	 */
 	private Map<String, Integer> profit;
+	
+	/**
+	 * The sum of BUY amount for a day for each currency.
+	 */
 	private Map<String, Integer> amountBuy;
+	
+	/**
+	 * The sum of SELL amount for a day for each currency.
+	 */
 	private Map<String, Integer> amountSell;
+
+	/**
+	 * The result of SELL - BUY for a day for each currency.
+	 */
 	private Map<String, Integer> total;
+	
+	/**
+	 * The site which the transactions belongs to.
+	 */
 	private String site;
+	
+	/**
+	 * The date the transactions occurred (Transaction.getTimeStamp).
+	 */
 	private LocalDate date;
 
+	/**
+	 * Initialize a new statDay.
+	 * 
+	 * @param site - The site which the transactions belongs to.
+	 * @param date - The date the transactions occurred.
+	 */
 	public StatDay(String site, LocalDate date) {
 		this.site = site;
 		this.date = date;
