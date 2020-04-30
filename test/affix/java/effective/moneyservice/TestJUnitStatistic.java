@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ public class TestJUnitStatistic {
 
 	private List<Transaction> testTransactionList = new ArrayList<>();
 	private List<String> testCurrencyCodes = new ArrayList<>();
-	private Map<String, Currency> testCurrencyMap = new HashMap<>();
 	private static List<Transaction> testTrans = new ArrayList<>();
 
 	@BeforeClass
@@ -27,9 +25,13 @@ public class TestJUnitStatistic {
 		LocalDate startDate = LocalDate.of(2020, 04, 01);
 		LocalDate endDate = LocalDate.of(2020, 04, 03);
 		
-		Site testSite = new Site("TestSite");
+		Site testSite = new Site("CENTER");
 		
-		testSite.readTransactions(startDate, endDate);
+		try {
+			testSite.readTransactions(startDate, endDate);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		testTrans = testSite.getCompletedTransactions();
 		
 		testTrans.forEach(System.out::println);
@@ -165,7 +167,7 @@ public class TestJUnitStatistic {
 	public void testGetTotalBuy() {
 		
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
-		Map<String, Integer> resultMap = testStats.getTotalBuy("2020-04-01");
+		Map<String, Integer> resultMap = testStats.getTotalAmountBuy("2020-04-01");
 		
 		assertTrue(16521 == resultMap.get("GBP"));
 	}
@@ -174,7 +176,7 @@ public class TestJUnitStatistic {
 	public void testGetTotalSell() {
 		
 		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
-		Map<String, Integer> resultMap = testStats.getTotalSell("2020-04-01");
+		Map<String, Integer> resultMap = testStats.getTotalAmountSell("2020-04-01");
 		
 		assertTrue(11743 == resultMap.get("GBP"));
 	}
@@ -231,5 +233,22 @@ public class TestJUnitStatistic {
 		Map<String, Integer> resultMap = testStats.getProfit("2020-04-01");
 		
 		assertTrue(141 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetAverageAmountBuy() {
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountBuy();
+		
+		assertTrue(550 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetAverageAmountSell() {
+		
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountSell();
+		
+		assertTrue(600 == resultMap.get("GBP"));
 	}
 }

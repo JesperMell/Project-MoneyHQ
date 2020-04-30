@@ -59,14 +59,15 @@ public class Site {
 		logger.info("Entering readTransactions method -->");
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(String.format("Reports/Report_CENTER_%s.ser", startDate)))) {
+					new FileInputStream(String.format("Reports/Report_%s_%s.ser", siteName, startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
         
 			} catch (IOException ioe) {
 				System.out.format("No report for %s\n", startDate);
-        logger.log(Level.WARNING, "Could not read file! " + ioe);
+				logger.log(Level.WARNING, "Could not read file! " + ioe);
 			} catch (ClassNotFoundException ioe) {
+				logger.log(Level.SEVERE, "Class missmatch exception! " + ioe);
 				throw new ClassNotFoundException("Reading error, class missmatch" + ioe);
 			}
 			startDate = startDate.plusDays(1);

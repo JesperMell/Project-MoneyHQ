@@ -1,0 +1,479 @@
+apr. 29, 2020 3:01:50 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:01:50 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:01:50 EM affix.java.effective.moneyservice.HQApp main
+INFO: -------Configuration_Ends-------
+
+apr. 29, 2020 3:01:50 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Entering HQmenu method -->
+apr. 29, 2020 3:01:52 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Exiting HQmenu method <--
+apr. 29, 2020 3:01:52 EM affix.java.effective.moneyservice.HQApp createNewSite
+INFO: Entering createNewSite method -->
+apr. 29, 2020 3:01:55 EM affix.java.effective.moneyservice.HQApp createNewSite
+INFO: Exiting createNewSite method <--
+apr. 29, 2020 3:01:55 EM affix.java.effective.moneyservice.HQApp CLIapplication
+INFO: -------Task_Done-------
+
+apr. 29, 2020 3:01:55 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Entering HQmenu method -->
+apr. 29, 2020 3:01:57 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Exiting HQmenu method <--
+apr. 29, 2020 3:01:57 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Entering menuInput method -->
+apr. 29, 2020 3:01:57 EM affix.java.effective.moneyservice.CLIHelper readSites
+INFO: Entering readSites method -->
+apr. 29, 2020 3:01:59 EM affix.java.effective.moneyservice.CLIHelper readSites
+INFO: Exiting readSites method <--
+apr. 29, 2020 3:01:59 EM affix.java.effective.moneyservice.CLIHelper readPeriod
+INFO: Entering readPeriod method -->
+apr. 29, 2020 3:02:01 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting readPeriod method <--
+apr. 29, 2020 3:02:01 EM affix.java.effective.moneyservice.CLIHelper readStartDay
+INFO: Entering readStartDay -->
+apr. 29, 2020 3:02:07 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting readStartDay <--
+apr. 29, 2020 3:02:07 EM affix.java.effective.moneyservice.CLIHelper readCurrencyCodes
+INFO: Entering readCurrencyCodes method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.CLIHelper readCurrencyCodes
+INFO: Exiting readCurrencyCodes method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Site readTransactions
+INFO: Entering readTransactions method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-11.ser (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-12.ser (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-13.ser (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Site readTransactions
+INFO: Exiting readTransaction method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic <init>
+INFO: Entering Statistics constructor -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic <init>
+INFO: Exiting Statistics constructor <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Entering getDiffCurrency method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Diff of all currency: {USD=1450}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Exiting getDiffCurrency method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-11.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-11.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-11.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-11.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-12.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-12.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-12.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-12.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-13.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-13.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-13.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-13.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=32}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=6439}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=-6439}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=37}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=7456}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=0}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=-7456}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=48}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=5996}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=3533}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=-2463}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {USD=25}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {USD=1496}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {USD=3527}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {USD=2031}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Entering getDiffCurrency method -->
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Diff of all currency: {USD=1450}
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Exiting getDiffCurrency method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting menuInput method <--
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp CLIapplication
+INFO: -------Task_Done-------
+
+apr. 29, 2020 3:02:09 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Entering HQmenu method -->
+apr. 29, 2020 3:02:11 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Exiting HQmenu method <--
+apr. 29, 2020 3:02:11 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Entering menuInput method -->
+apr. 29, 2020 3:02:11 EM affix.java.effective.moneyservice.CLIHelper readSites
+INFO: Entering readSites method -->
+apr. 29, 2020 3:02:13 EM affix.java.effective.moneyservice.CLIHelper readSites
+INFO: Exiting readSites method <--
+apr. 29, 2020 3:02:13 EM affix.java.effective.moneyservice.CLIHelper readPeriod
+INFO: Entering readPeriod method -->
+apr. 29, 2020 3:02:15 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting readPeriod method <--
+apr. 29, 2020 3:02:15 EM affix.java.effective.moneyservice.CLIHelper readStartDay
+INFO: Entering readStartDay -->
+apr. 29, 2020 3:02:25 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting readStartDay <--
+apr. 29, 2020 3:02:25 EM affix.java.effective.moneyservice.CLIHelper readCurrencyCodes
+INFO: Entering readCurrencyCodes method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.CLIHelper readCurrencyCodes
+INFO: Exiting readCurrencyCodes method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Site readTransactions
+INFO: Entering readTransactions method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Site readTransactions
+WARNING: Could not read file! java.io.FileNotFoundException: Reports\Report_CENTER_2020-04-19.ser (Det går inte att hitta filen)
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Site readTransactions
+INFO: Exiting readTransaction method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic <init>
+INFO: Entering Statistics constructor -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic <init>
+INFO: Exiting Statistics constructor <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Entering getDiffCurrency method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Diff of all currency: {AUD=-1150}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Exiting getDiffCurrency method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Entering getProfit method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-19.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Total profit from every currency: {AUD=0}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getProfit
+INFO: Exiting getProfit method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Entering getTotalAmountBuy method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-19.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Total amount bought for every currency: {AUD=0}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountBuy
+INFO: Exiting getTotalAmountBuy method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Entering getTotalAmountSell method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-19.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Total amount sold for every currency: {AUD=0}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmountSell
+INFO: Exiting getTotalAmountSell method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Entering getTotalAmount method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Entering readCurrencyConfigFIle method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+WARNING: Could not read CurrencyConfig file properly! java.io.FileNotFoundException: ExchangeRates\CurrencyConfig_2020-04-19.txt (Det går inte att hitta filen)
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp readCurrencyConfigFile
+INFO: Exiting readCurrencyConfigFIle method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: total profit for all currency : {AUD=0}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getTotalAmount
+INFO: Exiting getTotalAmount method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Entering getDiffCurrency method -->
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Diff of all currency: {AUD=-1150}
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.Statistic getDiffCurrency
+INFO: Exiting getDiffCurrency method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.CLIHelper menuInput
+INFO: Exiting menuInput method <--
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp CLIapplication
+INFO: -------Task_Done-------
+
+apr. 29, 2020 3:02:30 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Entering HQmenu method -->
+apr. 29, 2020 3:02:33 EM affix.java.effective.moneyservice.HQApp HQmenu
+INFO: Exiting HQmenu method <--
+apr. 29, 2020 3:02:33 EM affix.java.effective.moneyservice.HQApp CLIapplication
+INFO: -------Task_Done-------
+
