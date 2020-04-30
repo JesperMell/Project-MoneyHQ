@@ -213,7 +213,7 @@ public class CLIHelper {
 					System.out.println(
 							headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
 					System.out.println(rowDisplayer(
-							Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal())));
+							Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal()),"SEK"));
 
 					s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
 					s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
@@ -226,7 +226,7 @@ public class CLIHelper {
 					System.out.println("\nTOTAL");
 					System.out.println(
 							headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
-					System.out.println(rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total)));
+					System.out.println(rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total), "SEK"));
 				}
 			});
 
@@ -264,7 +264,7 @@ public class CLIHelper {
 
 				System.out
 						.println(headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell")));
-				System.out.println(rowDisplayer(Arrays.asList(l1, l2, l3, l4)));
+				System.out.println(rowDisplayer(Arrays.asList(l1, l2, l3, l4), "SEK"));
 			}
 		}
 		System.out.println("\n----- END -----");
@@ -498,16 +498,17 @@ public class CLIHelper {
 	 * @param list - List of Maps. The First key of each map will render as first in
 	 *             each column, which becomes a row. The second key will be the
 	 *             second line in each column, which is the second row, and so on.
+	 * @param prefix - String to prepend to column value.
 	 * 
 	 * @return String
 	 */
-	static String rowDisplayer(List<Map<String, Integer>> list) {
+	static String rowDisplayer(List<Map<String, Integer>> list, String prefix) {
 		StringBuilder table = new StringBuilder();
 		for (String c : list.get(0).keySet()) {
 			StringBuilder row = new StringBuilder();
 			for (Map<String, Integer> map : list) {
 				StringBuilder column = new StringBuilder();
-				column.append(String.format("%s: %d", c, map.get(c)));
+				column.append(String.format("%s: %d %s", c, map.get(c), prefix));
 				IntStream.range(0, DISPLAY_COLUMN_WIDTH - column.length()).forEachOrdered(n -> {
 					column.append(" ");
 				});

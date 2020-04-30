@@ -33,7 +33,7 @@ public class TestJUnitCLIHelper {
 		l2.put("A", 3);
 		l2.put("B", 4);
 			
-		String row = CLIHelper.rowDisplayer(Arrays.asList(l1, l2));
+		String row = CLIHelper.rowDisplayer(Arrays.asList(l1, l2), "");
 		assertEquals(row, "A: 1                |A: 3                |\nB: 2                |B: 4                |\n");
 	}
 
