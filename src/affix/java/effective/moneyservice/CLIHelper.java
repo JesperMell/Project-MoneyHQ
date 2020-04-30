@@ -273,7 +273,7 @@ public class CLIHelper {
 	/**
 	 * Predicate for filtering transaction by list of currencies.
 	 * 
-	 * @param currencies
+	 * @param currencies - A list holding currency codes
 	 * @return lambda predicate.
 	 */
 	public static Predicate<Transaction> currencyFilter(List<String> currencies) {
@@ -288,7 +288,7 @@ public class CLIHelper {
 	 * 
 	 * Returns a set with the selected site names.
 	 * 
-	 * @return Set<String> - a Set with the selected site names
+	 * @return Set{@code <Site>} - a Set with the selected site names
 	 */
 	private static Set<Site> readSites() {
 		logger.info("Entering readSites method -->");
@@ -345,7 +345,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering what the output should present.
 	 * 
-	 * @return Optional<DisplayOption>
+	 * @return Optional {@code <DisplayOption>} 
 	 */
 	private static Optional<DisplayOption> readDisplayOption() {
 		logger.info("Entering readDisplayOption -->");
@@ -370,7 +370,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering start date.
 	 * 
-	 * @return Optional<LocalDate> - a LocalDate in the format YYYY-MM-DD if
+	 * @return Optional {@code <LocalDate>} - a LocalDate in the format YYYY-MM-DD if
 	 *         available
 	 */
 	private static Optional<LocalDate> readStartDay() {
@@ -391,7 +391,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for entering Period.
 	 * 
-	 * @return Optional<Period> - a Period if available
+	 * @return Optional {@code<Period>} - a Period if available
 	 */
 	private static Optional<Period> readPeriod() {
 		logger.info("Entering readPeriod method -->");
@@ -422,7 +422,7 @@ public class CLIHelper {
 	 * 
 	 * Display menu for selecting currencies.
 	 * 
-	 * @return Optional<String> - a String with currency code if available
+	 * @return Optional {@code<String>} - a String with currency code if available
 	 */
 	private static List<String> readCurrencyCodes() {
 		logger.info("Entering readCurrencyCodes method -->");
