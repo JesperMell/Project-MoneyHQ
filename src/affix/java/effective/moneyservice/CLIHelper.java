@@ -24,11 +24,13 @@ import java.util.stream.IntStream;
  *
  */
 public class CLIHelper {
+
+
 	/**
-	 * Reads user input.
+	 * Variable for keyboard input
 	 */
 	static Scanner input = new Scanner(System.in);
-
+	
 	/**
 	 * The width of column when rendering output.
 	 */

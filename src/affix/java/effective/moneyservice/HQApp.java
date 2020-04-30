@@ -20,17 +20,34 @@ import java.util.logging.SimpleFormatter;
  */
 public class HQApp {
 
+	/**
+	 * A map holding 
+	 */
 	static Map<String, Site> sites = new HashMap<>();
+	/**
+	 * A map holding currency objects
+	 */
 	static Map<String, Currency> currencyMap = new HashMap<>();
 
+	/**
+	 * A logger object
+	 */
 	// create logger
 	private static Logger logger;
+	
+	/**
+	 * Variable holding the value for minimum ordered amount
+	 */
+	static final  int amountLimit = 50;
 
 	static {
 		logger = Logger.getLogger("affix.java.effective.moneyservice");
 	}
 
 
+	/**
+	 * Method setting up logger info
+	 */
 	private static void setupLogger() {
 		LogManager.getLogManager().reset();
 		// set the level of logging.
@@ -52,6 +69,10 @@ public class HQApp {
 		}
 	}
 
+	/**
+	 * @param args
+	 * The main method that execute the program 
+	 */
 	public static void main(String[] args) {
 		// Setting up logger.
 		setupLogger();
@@ -184,10 +205,6 @@ public class HQApp {
 		}
 		logger.info("Exiting readCurrencyConfigFIle method <--");
 		return tempMap;
-	}
-
-	public static void readConfigFile() {
-
 	}
 
 	/**
