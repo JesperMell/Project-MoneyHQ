@@ -344,22 +344,14 @@ public class Statistic {
 			Currency temp = HQApp.currencyMap.get(code);
 
 			// Convert BUY transactions into reference currency and sum them up
-			Integer sumBuyAmount = transactions.stream()
+			Integer sumAmount = transactions.stream()
 					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
 					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
-					.filter(t -> t.getMode().equals(TransactionMode.BUY))												// Filter on TransactionMode
 					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
 					.reduce(0, Integer::sum);																			// Sum up the amount into total bought in reference currency
 
-			Integer sumSellAmount = transactions.stream()
-					.filter(t -> filteredDate.equalsIgnoreCase(String.format("%s", t.getTimeStamp().toLocalDate())))	// Filter the transactions current input day
-					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))											// Filter on currencyCode
-					.filter(t -> t.getMode().equals(TransactionMode.SELL))												// Filter on TransactionMode
-					.map(t -> (int) Math.round(t.getAmount() * temp.getExchangeRate()))									// Convert transaction into reference currency
-					.reduce(0, Integer::sum);																			// Sum up the amount into total sold in reference currency
-
 			// Calculate the total profit from the sold amount and the bought amount based on profit margin
-			Integer profit = (int) Math.round(((sumBuyAmount + sumSellAmount) * PROFIT_MARGIN_RATE));
+			Integer profit = (int) Math.round((sumAmount * PROFIT_MARGIN_RATE));
 
 			resultMap.putIfAbsent(code, profit);
 		}

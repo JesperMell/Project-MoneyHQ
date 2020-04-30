@@ -18,7 +18,7 @@ public class Transaction implements java.io.Serializable{
 	private LocalDateTime timeStamp;
 	
 	private static int uniqueId = 0;
-	
+  
 	/**
 	 * Constructor
 	 * @param currencyCode - a list of currency codes
@@ -27,17 +27,8 @@ public class Transaction implements java.io.Serializable{
 	 * @throws java.lang.IllegalArgumentException if currency code is missing or the amount is too low
 	 */
 	public Transaction(String currencyCode, int amount, TransactionMode mode) {
-		this(currencyCode, amount, mode, ++uniqueId);
-	}
-
-	public Transaction(String currencyCode, int amount, TransactionMode mode, int id) {
 		if(currencyCode == null || currencyCode.isEmpty()) {
 			throw new IllegalArgumentException("currencyCode missing!");
-		}
-		else{
-			if(amount < 50) {
-				throw new IllegalArgumentException("Amount too low!");
-			}
 		}
 
 		this.currencyCode = currencyCode;
@@ -46,12 +37,9 @@ public class Transaction implements java.io.Serializable{
 		this.mode = mode;
 		timeStamp = LocalDateTime.now();
 		
-		this.id = id;
+		this.id = ++uniqueId;
 	}
-
-	public LocalDateTime getCreatedAt() {
-		return timeStamp;
-	}
+	
 	/**
 	 * @return the timeStamp
 	 */
