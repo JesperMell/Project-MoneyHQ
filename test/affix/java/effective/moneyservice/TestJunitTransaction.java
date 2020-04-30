@@ -132,7 +132,7 @@ public class TestJunitTransaction {
 	public void testGetTimeStamp() {
 		Transaction t1 = new Transaction("EUR", 300, TransactionMode.BUY);
 		
-		LocalDateTime temp = t1.getCreatedAt();
+		LocalDateTime temp = t1.getTimeStamp();
 		LocalDate nowDate = LocalDate.now();
 		
 		assertTrue(nowDate.equals(temp.toLocalDate()));
