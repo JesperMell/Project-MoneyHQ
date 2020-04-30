@@ -12,6 +12,12 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * This class triggers an application to show statistics for the chosen transactions
+ * 
+ * @author Group Center
+ *
+ */
 public class HQApp {
 
 	static Map<String, Site> sites = new HashMap<>();
@@ -137,7 +143,12 @@ public class HQApp {
 		logger.info("Exiting createNewSite method <--");
 		return newSite;
 	}
-
+	
+	/**
+	 * Read the contents in the currency config file
+	 * @param filename - a currency config text file name
+	 * @return a Map with currency code as key and exchange rate as value 
+	 */
 
 	public static Map<String, Currency> readCurrencyConfigFile(String filename) {
 		logger.info("Entering readCurrencyConfigFIle method -->");
@@ -166,6 +177,11 @@ public class HQApp {
 
 	}
 
+	/**
+	 * A helper method to split up the parts in the currency config files
+	 * @param input - each row from the text file
+	 * @return Currency (a currency code and a exchange rate)
+	 */
 	private static Currency parseInput(String input) {
 
 		// The column looks like following:
