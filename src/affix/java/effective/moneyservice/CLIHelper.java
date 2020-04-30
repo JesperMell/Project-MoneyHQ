@@ -276,7 +276,7 @@ public class CLIHelper {
 	 * @param currencies - A list holding currency codes
 	 * @return lambda predicate.
 	 */
-	public static Predicate<Transaction> currencyFilter(List<String> currencies) {
+	private static Predicate<Transaction> currencyFilter(List<String> currencies) {
 		return t -> currencies.contains(t.getCurrencyCode());
 	}
 
