@@ -3,6 +3,7 @@ package affix.java.effective.moneyservice;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CLIHelper {
 
@@ -71,10 +73,6 @@ public class CLIHelper {
 		List<StatDay> result = new ArrayList<>();
 
 		for (Statistic s : statistics) {
-			System.out.println(s.getSiteName());
-			System.out.println("---");
-			System.out.println(s.getDiffCurrency());
-			System.out.println("---");
 			for (LocalDate l = startDay.get(); !l.equals(endDay); l = l.plusDays(1)) {
 				StatDay stat = new StatDay(s.getSiteName(), l);
 				stat.setProfit(s.getProfit(l.toString()));
@@ -84,6 +82,12 @@ public class CLIHelper {
 
 				result.add(stat);
 			}
+
+			System.out.println(String.format("Transactions for %s", s.getSiteName()));
+			headDisplayer(Arrays.asList("ID","TYPE","AMOUNT","CURRENCY"));
+			s.getTransactions().forEach(t -> {
+				headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "", t.getMode().toString(),String.valueOf(t.getAmount()), t.getCurrencyCode()));
+			});
 		}
 
 		result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
@@ -91,60 +95,53 @@ public class CLIHelper {
 			Map<String, Integer> amountBuy = new HashMap<>();
 			Map<String, Integer> amountSell = new HashMap<>();
 			Map<String, Integer> total = new HashMap<>();
-
-			System.out.println(k);
+			
+			System.out.println(String.format("\n----- %s -----", k));
 			v.forEach((s) -> {
-				System.out.println(s.getDate());
-				System.out.println(s.getProfit());
-				System.out.println(s.getAmountBuy());
-				System.out.println(s.getAmountSell());
-				System.out.println(s.getTotal());
+				
+				System.out.println("\n" + s.getDate());
+				headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell"));
+				rowDisplayer(Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal()));
 
 				s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
 				s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
 				s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
 				s.getTotal().forEach((a, b) -> total.merge(a, b, Integer::sum));
 			});
-			System.out.println("TOTAL:");
-			System.out.println(profit);
-			System.out.println(amountBuy);
-			System.out.println(amountSell);
-			System.out.println(total);
+			System.out.println("\nTOTAL");
+			rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total));
 		});
+		
 
 		// Display Statistics for all sites.
-		System.out.println("ALL");
-		statistics.stream().map(s -> s.getDiffCurrency()).flatMap(m -> m.entrySet().stream())
-				.collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.summingInt(Map.Entry::getValue)))
-				.forEach((x, y) -> System.out.println(x + ": " + y));
-
+		System.out.println("\n----- ALL -----");
+		
 		// Display Total Profit all sites combined for each currency.
-		System.out.println("Profit:");
-		result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getProfit, (s1, s2) -> {
+		Map<String, Integer> l1 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getProfit, (s1, s2) -> {
 			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
 			return s2;
-		})).get("ALL").forEach((k, v) -> System.out.println(k + " " + v));
+		})).get("ALL");
 
 		// Display Total Buy amount all sites combined for each currency.
-		System.out.println("Amount Buy:");
-		result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountBuy, (s1, s2) -> {
+		Map<String, Integer> l2 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountBuy, (s1, s2) -> {
 			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
 			return s2;
-		})).get("ALL").forEach((k, v) -> System.out.println(k + " " + v));
+		})).get("ALL");
 
 		// Display Total Sell amount all sites combined for each currency.
-		System.out.println("Amount Sell:");
-		result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountSell, (s1, s2) -> {
+		Map<String, Integer> l3 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountSell, (s1, s2) -> {
 			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
 			return s2;
-		})).get("ALL").forEach((k, v) -> System.out.println(k + " " + v));
+		})).get("ALL");
 
 		// Display Total amount all sites combined for each currency.
-		System.out.println("Amount Total:");
-		result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getTotal, (s1, s2) -> {
+		Map<String, Integer> l4 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getTotal, (s1, s2) -> {
 			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
 			return s2;
-		})).get("ALL").forEach((k, v) -> System.out.println(k + " " + v));
+		})).get("ALL");
+		
+		rowDisplayer(Arrays.asList(l1,l2,l3,l4));
+		System.out.println("--- END ---");
 
 	}
 
@@ -282,6 +279,37 @@ public class CLIHelper {
 			return startDay.get().plusMonths(1);
 		}
 		return startDay.get();
+	}
+	
+	private static void headDisplayer(List<String> titles) {
+		StringBuilder row = new StringBuilder();
+		titles.forEach(s -> {
+			StringBuilder sb = new StringBuilder();
+			sb.append(s);
+			IntStream.range(0, 18 - sb.length()).forEachOrdered(n -> {
+				sb.append(" ");
+			});
+			sb.append("|");
+			row.append(sb);
+		});
+		System.out.println(row);
+	}
+	
+	private static void rowDisplayer(List<Map<String, Integer>> list) {
+		for(String c : list.get(0).keySet()) {
+			StringBuilder row = new StringBuilder();
+			for(Map<String, Integer> map : list) {
+				StringBuilder column = new StringBuilder();
+				column.append(String.format("%s: %d", c, map.get(c)));
+				IntStream.range(0, 18 - column.length()).forEachOrdered(n -> {
+					column.append(" ");
+				});
+				column.append("|");
+				row.append(column);
+			}
+			System.out.println(row);
+		}
+		
 	}
 }
 
