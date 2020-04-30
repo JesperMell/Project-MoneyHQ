@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class Statistic {
 
@@ -367,88 +365,76 @@ public class Statistic {
 		logger.info("Exiting getProfit method <--");
 		return resultMap;
 	}
-
-
-	//	public Map<String, Integer> getTransactionCountPerCurrency() {
-	//		
-	//	}
-
-	//		public Map<String, Integer> getAverageAmount() {
-	//			
-	//			Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
-	//			Map<String, Integer> hmNo = getTotalTransactions();
-	//		}
-
-	
 	
 	/**
-	 * Get the average amount for each currency in the chosen reference currency
-	 * @param A string holding a date in the format of YYYY-MM-DD
-	 * @return Map with an average amount for each currency in reference currency
+	 * Method for calculating the average amount for buy transactions
+	 * @return a resulting map holding the calculated average for each currency for BUY-transactions
 	 */
-	public Map<String, Integer> getAverageAmount(String filteredDate) {
-		
-		logger.info("Entering getAverageAmount method -->");
-			
-		Map<String, Integer> hmAmount = getTotalAmount(filteredDate);
-		Map<String, Integer> hmNo = getTotalTransactions();
-		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
-			
-		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
-		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
-			
-		for (Map.Entry<String, Integer> meAmount : esetAmount)
-			for (Map.Entry<String, Integer> meNo : esetNo)
-				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
-		logger.info("Avarage amount from all currency: " + resultMap);
-		logger.info("Exiting getAverageAmount method <--");
-		return resultMap;
-	}
-	
-	/**
-	 * The same as method "getAverageAmount" but only for BUY-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
-	 * @return The same as method "getAverageAmount" but only for BUY-transactions
-	 */
-	public Map<String, Integer> getAverageAmountBuy(String filteredDate) {
+	public Map<String, Integer> getAverageAmountBuy() {
 		
 		logger.info("Entering getAverageAmountBuy method -->");
-			
-		Map<String, Integer> hmAmount = getTotalAmountBuy(filteredDate);
-		Map<String, Integer> hmNo = getTotalTransactionsBuy();
-		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
-			
-		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
-		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
-			
-		for (Map.Entry<String, Integer> meAmount : esetAmount)
-			for (Map.Entry<String, Integer> meNo : esetNo)
-				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
 		
+		Map<String, Integer> transactionMap = getTotalTransactionsBuy();
+		Map<String, Integer> resultMap = new HashMap<>();
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
+			
+			Integer totalAmountBuy = transactions.stream()
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.BUY)) 		// Filter on TransactionMode.BUY
+					.map(t -> t.getAmount()) 									// Get the amount in the transaction
+					.reduce(0, Integer::sum);									// Sum up the amount into total buyAmount
+			
+			// If the summed up amount is 0 set the average to 0
+			if(totalAmountBuy == 0) {
+				resultMap.putIfAbsent(code, 0);
+			}
+			else {
+				// Calculate average by total transaction amount divided on the total amount of transactions
+				resultMap.putIfAbsent(code, totalAmountBuy / transactionMap.get(code));				
+			}
+		}		
 		logger.info("Avarage buy amount from all currency: " + resultMap);
 		logger.info("Exiting getAverageAmountBuy method <--");
 		return resultMap;
 	}
 
 	/**
-	 * The same as method "getAverageAmount" but only for SELL-transactions
-	 * @param A string holding a date in the format of YYYY-MM-DD
-	 * @return The same as method "getAverageAmount" but only for SELL-transactions
+	 * Method for calculating the average amount for sell transactions
+	 * @return a resulting map holding the calculated average for each currency for SELL-transactions
 	 */
-	public Map<String, Integer> getAverageAmountSell(String filteredDate) {
+	public Map<String, Integer> getAverageAmountSell() {
 			
 		logger.info("Entering getAverageAmountSell method -->");
-		Map<String, Integer> hmAmount = getTotalAmountSell(filteredDate);
-		Map<String, Integer> hmNo = getTotalTransactionsSell();
-		Map<String, Integer> resultMap = new HashMap<String, Integer>(); 
+		
+		Map<String, Integer> transactionMap = getTotalTransactionsSell();
+		Map<String, Integer> resultMap = new HashMap<>();
+		// Create iterator for the existing currency codes and iterate
+		for (Iterator<String> iter = currencyCodes.iterator(); iter.hasNext(); ) {
+			String code = iter.next();
+			if(code.isEmpty()) {
+				logger.log(Level.WARNING, "currencyCode is empty! " + code);
+			}
 			
-		Set<Map.Entry<String, Integer>> esetAmount = hmAmount.entrySet();
-		Set<Map.Entry<String, Integer>> esetNo = hmNo.entrySet();
+			Integer totalAmountBuy = transactions.stream()
+					.filter(t -> t.getCurrencyCode().equalsIgnoreCase(code))	// Filter based on currency code
+					.filter(t -> t.getMode().equals(TransactionMode.SELL)) 		// Filter on TransactionMode.SELL
+					.map(t -> t.getAmount()) 									// Get the amount in the transaction
+					.reduce(0, Integer::sum);									// Sum up the amount into total sellAmount
 			
-		for (Map.Entry<String, Integer> meAmount : esetAmount)
-			for (Map.Entry<String, Integer> meNo : esetNo)
-				resultMap.put(meAmount.getKey(), meAmount.getValue()/meNo.getValue());
-			
+			// If the summed up amount is 0 set the average to 0
+			if(totalAmountBuy == 0) {
+				resultMap.putIfAbsent(code, 0);
+			}
+			else {
+				// Calculate average by total transaction amount divided on the total amount of transactions
+				resultMap.putIfAbsent(code, totalAmountBuy / transactionMap.get(code));				
+			}
+		}		
 		logger.info("Avarage sell amount from all currency: " + resultMap);
 		logger.info("Exiting getAverageAmountSell method <--");
 		return resultMap;

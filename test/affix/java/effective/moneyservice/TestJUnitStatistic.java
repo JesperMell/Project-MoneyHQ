@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -234,5 +233,22 @@ public class TestJUnitStatistic {
 		Map<String, Integer> resultMap = testStats.getProfit("2020-04-01");
 		
 		assertTrue(141 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetAverageAmountBuy() {
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountBuy();
+		
+		assertTrue(550 == resultMap.get("GBP"));
+	}
+	
+	@Test
+	public void testGetAverageAmountSell() {
+		
+		Statistic testStats = new Statistic(testTrans, testCurrencyCodes, "TestSite");
+		Map<String, Integer> resultMap = testStats.getAverageAmountSell();
+		
+		assertTrue(600 == resultMap.get("GBP"));
 	}
 }

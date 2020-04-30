@@ -56,21 +56,25 @@ public class TestJunitTransaction {
 		assertEquals(TransactionMode.SELL, t1.getMode());
 	}
 	
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingCurrencyCode_1() {
 		Transaction t3 = new Transaction("", 1000, TransactionMode.SELL);
 	}
 	
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testMissingCurrencyCode_2() {
 		Transaction t3 = new Transaction(null, 1000, TransactionMode.SELL);
 	}
 	
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testNegativeAmount() {
 		Transaction t4 = new Transaction("USD", -100, TransactionMode.BUY);
 	}
 	
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testZeroAmount() {
 		Transaction t4 = new Transaction("USD", 0, TransactionMode.SELL);

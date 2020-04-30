@@ -11,12 +11,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class CLIHelper {
 
 	static Scanner input = new Scanner(System.in);
+	
+	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	enum Period {
 		DAY, WEEK, MONTH
@@ -29,6 +33,7 @@ public class CLIHelper {
 	 * 
 	 */
 	static void menuInput() {
+		logger.info("Entering menuInput method -->");
 		Set<Site> sites;
 		Optional<LocalDate> startDay;
 		Optional<Period> periodOption;
@@ -42,11 +47,13 @@ public class CLIHelper {
 		// Choose Period
 		do {
 			periodOption = readPeriod();
+			logger.info("Exiting readPeriod method <--");
 		} while (periodOption.isEmpty());
 
 		// Choose Start Day.
 		do {
 			startDay = readStartDay();
+			logger.info("Exiting readStartDay <--");
 		} while (startDay.isEmpty());
 
 		// Choose Currency.
@@ -156,6 +163,7 @@ public class CLIHelper {
 	 * @return Set<String>
 	 */
 	private static Set<Site> readSites() {
+		logger.info("Entering readSites method -->");
 		System.out.println("Choose a Site (For multiple choices use comma seperation)");
 
 		List<Site> sites = new ArrayList<>();
@@ -183,13 +191,15 @@ public class CLIHelper {
 				result.add(sites.get(index - 1));
 			}
 		} catch (IndexOutOfBoundsException e) {
+			logger.log(Level.SEVERE, "input exception! " + e);
 			return new HashSet<>();
 		}
 
 		System.out.println("Site selected: ");
 		result.forEach((s) -> System.out.println(s.getSiteName()));
 		System.out.println("---");
-
+		
+		logger.info("Exiting readSites method <--");
 		return result;
 	}
 
@@ -201,10 +211,12 @@ public class CLIHelper {
 	 * @return Optional<LocalDate>
 	 */
 	private static Optional<LocalDate> readStartDay() {
+		logger.info("Entering readStartDay -->");
 		System.out.println("Enter start day of Period");
 		try {
 			return Optional.of(LocalDate.parse(input.next()));
 		} catch (DateTimeParseException e) {
+			logger.log(Level.SEVERE, "time input exception! " + e);
 			System.out.println("Invalid format, try again");
 			return Optional.empty();
 		}
@@ -218,6 +230,8 @@ public class CLIHelper {
 	 * @return Optional<Period>
 	 */
 	private static Optional<Period> readPeriod() {
+		
+		logger.info("Entering readPeriod method -->");
 		int i = 0;
 		System.out.println("Choose a Period");
 		for (Period p : Period.values()) {
@@ -229,6 +243,7 @@ public class CLIHelper {
 		try {
 			return Optional.of(Period.values()[data - 1]);
 		} catch (IndexOutOfBoundsException e) {
+			logger.log(Level.SEVERE, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return Optional.empty();
 		}
@@ -242,6 +257,7 @@ public class CLIHelper {
 	 * @return Optional<String>
 	 */
 	private static List<String> readCurrencyCodes() {
+		logger.info("Entering readCurrencyCodes method -->");
 		System.out.println("Choose currencies (Use comma as seperator)");
 		HQApp.currencyMap.keySet().forEach((x) -> System.out.print(x + " "));
 		System.out.println("ALL");
@@ -258,6 +274,7 @@ public class CLIHelper {
 				currencies.add(code);
 		}
 
+		logger.info("Exiting readCurrencyCodes method <--");
 		return currencies;
 
 	}
