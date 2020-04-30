@@ -19,11 +19,15 @@ import java.util.stream.IntStream;
 public class CLIHelper {
 
 	static Scanner input = new Scanner(System.in);
-	
+
 	private final static Logger logger = Logger.getLogger("affix.java.effective.moneyservice");
 
 	enum Period {
 		DAY, WEEK, MONTH
+	};
+
+	enum DisplayOption {
+		STATISTICS, TRANSACTIONS, BOTH
 	};
 
 	/**
@@ -38,6 +42,7 @@ public class CLIHelper {
 		Optional<LocalDate> startDay;
 		Optional<Period> periodOption;
 		List<String> currencies;
+		Optional<DisplayOption> display_option;
 
 		// Choose Site.
 		do {
@@ -60,6 +65,11 @@ public class CLIHelper {
 		do {
 			currencies = readCurrencyCodes();
 		} while (currencies.isEmpty());
+
+		// Choose Display Option.
+		do {
+			display_option = readDisplayOption();
+		} while (display_option.isEmpty());
 
 		LocalDate endDay = createEndDay(periodOption, startDay);
 
@@ -90,65 +100,78 @@ public class CLIHelper {
 				result.add(stat);
 			}
 
-			System.out.println(String.format("Transactions for %s", s.getSiteName()));
-			headDisplayer(Arrays.asList("ID","TYPE","AMOUNT","CURRENCY"));
-			s.getTransactions().forEach(t -> {
-				headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "", t.getMode().toString(),String.valueOf(t.getAmount()), t.getCurrencyCode()));
-			});
+			if (display_option.get().equals(DisplayOption.TRANSACTIONS)
+					|| display_option.get().equals(DisplayOption.BOTH)) {
+				System.out.println(String.format("Transactions for %s", s.getSiteName()));
+				headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY"));
+				s.getTransactions().forEach(t -> {
+					headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "", t.getMode().toString(),
+							String.valueOf(t.getAmount()), t.getCurrencyCode()));
+				});
+			}
 		}
 
-		result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
-			Map<String, Integer> profit = new HashMap<>();
-			Map<String, Integer> amountBuy = new HashMap<>();
-			Map<String, Integer> amountSell = new HashMap<>();
-			Map<String, Integer> total = new HashMap<>();
-			
-			System.out.println(String.format("\n----- %s -----", k));
-			v.forEach((s) -> {
-				
-				System.out.println("\n" + s.getDate());
-				headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell"));
-				rowDisplayer(Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal()));
+		if (display_option.get().equals(DisplayOption.STATISTICS) || display_option.get().equals(DisplayOption.BOTH)) {
+			result.stream().collect(Collectors.groupingBy(StatDay::getSite)).forEach((k, v) -> {
+				Map<String, Integer> profit = new HashMap<>();
+				Map<String, Integer> amountBuy = new HashMap<>();
+				Map<String, Integer> amountSell = new HashMap<>();
+				Map<String, Integer> total = new HashMap<>();
 
-				s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
-				s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
-				s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
-				s.getTotal().forEach((a, b) -> total.merge(a, b, Integer::sum));
+				System.out.println(String.format("\n----- %s -----", k));
+				v.forEach((s) -> {
+
+					System.out.println("\n" + s.getDate());
+					headDisplayer(Arrays.asList("Profit", "Total Buy", "Total Sell", "Total Buy & Sell"));
+					rowDisplayer(Arrays.asList(s.getProfit(), s.getAmountBuy(), s.getAmountSell(), s.getTotal()));
+
+					s.getProfit().forEach((a, b) -> profit.merge(a, b, Integer::sum));
+					s.getAmountBuy().forEach((a, b) -> amountBuy.merge(a, b, Integer::sum));
+					s.getAmountSell().forEach((a, b) -> amountSell.merge(a, b, Integer::sum));
+					s.getTotal().forEach((a, b) -> total.merge(a, b, Integer::sum));
+				});
+				if (v.size() > 1) {
+					System.out.println("\nTOTAL");
+					rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total));
+				}
 			});
-			System.out.println("\nTOTAL");
-			rowDisplayer(Arrays.asList(profit, amountBuy, amountSell, total));
-		});
-		
 
-		// Display Statistics for all sites.
-		System.out.println("\n----- ALL -----");
-		
-		// Display Total Profit all sites combined for each currency.
-		Map<String, Integer> l1 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getProfit, (s1, s2) -> {
-			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
-			return s2;
-		})).get("ALL");
+			// Display Statistics for all sites.
+			if (sites.size() > 1) {
+				System.out.println("\n----- ALL -----");
 
-		// Display Total Buy amount all sites combined for each currency.
-		Map<String, Integer> l2 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountBuy, (s1, s2) -> {
-			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
-			return s2;
-		})).get("ALL");
+				// Display Total Profit all sites combined for each currency.
+				Map<String, Integer> l1 = result.stream()
+						.collect(Collectors.toMap(e -> "ALL", StatDay::getProfit, (s1, s2) -> {
+							s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
+							return s2;
+						})).get("ALL");
 
-		// Display Total Sell amount all sites combined for each currency.
-		Map<String, Integer> l3 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getAmountSell, (s1, s2) -> {
-			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
-			return s2;
-		})).get("ALL");
+				// Display Total Buy amount all sites combined for each currency.
+				Map<String, Integer> l2 = result.stream()
+						.collect(Collectors.toMap(e -> "ALL", StatDay::getAmountBuy, (s1, s2) -> {
+							s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
+							return s2;
+						})).get("ALL");
 
-		// Display Total amount all sites combined for each currency.
-		Map<String, Integer> l4 = result.stream().collect(Collectors.toMap(e -> "ALL", StatDay::getTotal, (s1, s2) -> {
-			s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
-			return s2;
-		})).get("ALL");
-		
-		rowDisplayer(Arrays.asList(l1,l2,l3,l4));
-		System.out.println("--- END ---");
+				// Display Total Sell amount all sites combined for each currency.
+				Map<String, Integer> l3 = result.stream()
+						.collect(Collectors.toMap(e -> "ALL", StatDay::getAmountSell, (s1, s2) -> {
+							s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
+							return s2;
+						})).get("ALL");
+
+				// Display Total amount all sites combined for each currency.
+				Map<String, Integer> l4 = result.stream()
+						.collect(Collectors.toMap(e -> "ALL", StatDay::getTotal, (s1, s2) -> {
+							s1.forEach((k, v) -> s2.merge(k, v, Integer::sum));
+							return s2;
+						})).get("ALL");
+
+				rowDisplayer(Arrays.asList(l1, l2, l3, l4));
+			}
+		}
+		System.out.println("\n----- END -----");
 
 	}
 
@@ -198,9 +221,33 @@ public class CLIHelper {
 		System.out.println("Site selected: ");
 		result.forEach((s) -> System.out.println(s.getSiteName()));
 		System.out.println("---");
-		
+
 		logger.info("Exiting readSites method <--");
 		return result;
+	}
+
+	/**
+	 * readDisplayOption.
+	 * 
+	 * Display menu for entering what the output should present.
+	 * 
+	 * @return Optional<LocalDate>
+	 */
+	private static Optional<DisplayOption> readDisplayOption() {
+		logger.info("Entering readDisplayOption -->");
+		System.out.println("Enter what to present:");
+		int i = 0;
+		for (DisplayOption d : DisplayOption.values()) {
+			System.out.println(String.format("%d: %s", ++i, d));
+		}
+
+		try {
+			return Optional.of(DisplayOption.values()[input.nextInt() - 1]);
+		} catch (IndexOutOfBoundsException e) {
+			logger.log(Level.SEVERE, "Display Option exception! " + e);
+			System.out.println("Invalid option, try again!");
+			return Optional.empty();
+		}
 	}
 
 	/**
@@ -230,7 +277,7 @@ public class CLIHelper {
 	 * @return Optional<Period>
 	 */
 	private static Optional<Period> readPeriod() {
-		
+
 		logger.info("Entering readPeriod method -->");
 		int i = 0;
 		System.out.println("Choose a Period");
@@ -264,8 +311,8 @@ public class CLIHelper {
 		String data = input.next();
 
 		List<String> currencies = new ArrayList<>();
-		
-		if(data.equals("ALL")) {
+
+		if (data.equals("ALL")) {
 			return new ArrayList<String>(HQApp.currencyMap.keySet());
 		}
 
@@ -297,7 +344,7 @@ public class CLIHelper {
 		}
 		return startDay.get();
 	}
-	
+
 	private static void headDisplayer(List<String> titles) {
 		StringBuilder row = new StringBuilder();
 		titles.forEach(s -> {
@@ -311,11 +358,11 @@ public class CLIHelper {
 		});
 		System.out.println(row);
 	}
-	
+
 	private static void rowDisplayer(List<Map<String, Integer>> list) {
-		for(String c : list.get(0).keySet()) {
+		for (String c : list.get(0).keySet()) {
 			StringBuilder row = new StringBuilder();
-			for(Map<String, Integer> map : list) {
+			for (Map<String, Integer> map : list) {
 				StringBuilder column = new StringBuilder();
 				column.append(String.format("%s: %d", c, map.get(c)));
 				IntStream.range(0, 18 - column.length()).forEachOrdered(n -> {
@@ -326,7 +373,7 @@ public class CLIHelper {
 			}
 			System.out.println(row);
 		}
-		
+
 	}
 }
 
