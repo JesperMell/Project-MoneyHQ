@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -25,12 +27,11 @@ import java.util.stream.IntStream;
  */
 public class CLIHelper {
 
-
 	/**
 	 * Variable for keyboard input
 	 */
 	static Scanner input = new Scanner(System.in);
-	
+
 	/**
 	 * The width of column when rendering output.
 	 */
@@ -162,8 +163,8 @@ public class CLIHelper {
 						String.format("%s does not have any transactions and won't be included", s.getSiteName()));
 			}
 		}
-		
-		if(statistics.isEmpty()) {
+
+		if (statistics.isEmpty()) {
 			System.out.println("No statistics were generated");
 			return;
 		}
@@ -188,7 +189,7 @@ public class CLIHelper {
 					|| display_option.get().equals(DisplayOption.BOTH)) {
 				System.out.println(String.format("----- Transactions for %s -----", s.getSiteName()));
 				System.out.println(headDisplayer(Arrays.asList("ID", "TYPE", "AMOUNT", "CURRENCY", "TIMESTAMP")));
-				s.getTransactions().forEach(t -> {
+				s.getTransactions().stream().filter(currencyFilter(currencies)).forEach(t -> {
 					System.out.println(headDisplayer(Arrays.asList(String.valueOf(t.getId()) + "",
 							t.getMode().toString(), String.valueOf(t.getAmount()), t.getCurrencyCode(),
 							DateTimeFormatter.ofPattern("YYYY-MM-dd h:m:s").format(t.getTimeStamp()))));
@@ -270,6 +271,16 @@ public class CLIHelper {
 	}
 
 	/**
+	 * Predicate for filtering transaction by list of currencies.
+	 * 
+	 * @param currencies
+	 * @return lambda predicate.
+	 */
+	public static Predicate<Transaction> currencyFilter(List<String> currencies) {
+		return t -> currencies.contains(t.getCurrencyCode());
+	}
+
+	/**
 	 * readSites.
 	 * 
 	 * Display menu for selecting sites. The user can select 1 to n sites, choose
@@ -310,6 +321,15 @@ public class CLIHelper {
 			}
 		} catch (IndexOutOfBoundsException e) {
 			logger.log(Level.SEVERE, "input exception! " + e);
+			System.out.println("Wrong input.");
+			return new HashSet<>();
+		} catch (InputMismatchException e) {
+			logger.log(Level.SEVERE, "input exception! " + e);
+			System.out.println("Wrong input.");
+			return new HashSet<>();
+		} catch (NumberFormatException e) {
+			logger.log(Level.SEVERE, "input exception! " + e);
+			System.out.println("Wrong input.");
 			return new HashSet<>();
 		}
 
@@ -382,10 +402,15 @@ public class CLIHelper {
 		}
 
 		System.out.print("Enter your choice:");
-		int data = input.nextInt();
 		try {
+			int data = input.nextInt();
 			return Optional.of(Period.values()[data - 1]);
 		} catch (IndexOutOfBoundsException e) {
+			logger.log(Level.SEVERE, "input exception! " + e);
+			System.out.println("Wrong input.");
+			return Optional.empty();
+		} catch (InputMismatchException e) {
+			input.next();
 			logger.log(Level.SEVERE, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return Optional.empty();
@@ -428,8 +453,8 @@ public class CLIHelper {
 	 * 
 	 * Calculates the endDate for startDate and Period.
 	 * 
-	 * @param periodOption    - an enum type
-	 * @param startDay - a start date in the format YYYY-MM-DD
+	 * @param periodOption - an enum type
+	 * @param startDay     - a start date in the format YYYY-MM-DD
 	 * @return LocalDate - an end date in the format YYYY-MM-DD
 	 */
 	static LocalDate createEndDay(Optional<Period> periodOption, Optional<LocalDate> startDay) {
