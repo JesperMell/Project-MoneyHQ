@@ -74,7 +74,7 @@ public class Site {
 							.forEach((o) -> { completedTransactions.add(o); });
         
 			} catch (IOException ioe) {
-				System.out.format("No report for %s\n", startDate);
+				System.out.format("No report for site: %s date: %s\n",siteName, startDate);
 				logger.log(Level.WARNING, "Could not read file! " + ioe);
 			} catch (ClassNotFoundException ioe) {
 				logger.log(Level.SEVERE, "Class missmatch exception! " + ioe);
