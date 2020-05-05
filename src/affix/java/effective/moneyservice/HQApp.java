@@ -106,7 +106,13 @@ public class HQApp {
 			case 1:
 				System.out.println("Register exchange office");
 				newSite = createNewSite();
-				sites.putIfAbsent(newSite.getSiteName(), newSite);
+				if(sites.containsKey(newSite.getSiteName())) {
+					System.out.println("Site already registred!1");
+				}
+				else {
+					sites.putIfAbsent(newSite.getSiteName(), newSite);					
+					writeNewSiteToConfigFile(newSite.getSiteName());
+				}
 				break;
 			case 2:
 				if(sites.isEmpty()) {
@@ -173,7 +179,6 @@ public class HQApp {
 				System.out.println("Write the name of the exchange office (must be the same as existing report)");
 				String siteName = CLIHelper.input.next();
 				newSite = new Site(siteName.toUpperCase());
-				writeNewSiteToConfigFile(newSite.getSiteName());
 			}
 			catch (IllegalArgumentException e) {
 				logger.log(Level.SEVERE, "Site generation exception! " + e);
