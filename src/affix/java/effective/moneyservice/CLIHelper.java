@@ -1,5 +1,6 @@
 package affix.java.effective.moneyservice;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -154,6 +155,11 @@ public class CLIHelper {
 				logger.log(Level.SEVERE, "Site exception! " + e1);
 				System.out.println("Something went wrong!");
 			}
+			
+			if(s.getCompletedTransactions().isEmpty()) {
+				System.out.println(String.format("There was no transactions to read from %s.", s.getSiteName()));
+				continue;
+			}
 
 			try {
 				statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
@@ -175,13 +181,21 @@ public class CLIHelper {
 
 		for (Statistic s : statistics) {
 			for (LocalDate l = startDay.get(); !l.equals(endDay); l = l.plusDays(1)) {
-				StatDay stat = new StatDay(s.getSiteName(), l);
-				stat.setProfit(s.getProfit(l.toString()));
-				stat.setAmountBuy(s.getTotalAmountBuy(l.toString()));
-				stat.setAmountSell(s.getTotalAmountSell(l.toString()));
-				stat.setTotal(s.getTotalAmount(l.toString()));
-
-				result.add(stat);
+				if(l.getDayOfWeek() == DayOfWeek.SATURDAY || l.getDayOfWeek() == DayOfWeek.SUNDAY) {
+					continue;
+				}
+				try {
+					StatDay stat = new StatDay(s.getSiteName(), l);
+					stat.setProfit(s.getProfit(l.toString()));
+					stat.setAmountBuy(s.getTotalAmountBuy(l.toString()));
+					stat.setAmountSell(s.getTotalAmountSell(l.toString()));
+					stat.setTotal(s.getTotalAmount(l.toString()));
+	
+					result.add(stat);
+				} catch(NullPointerException e) {
+					System.out.println("Something went wrong when generating statistics.");
+					System.out.println("Do you have currency config for this date?");
+				}
 			}
 
 			// Show Transactions.
@@ -268,6 +282,10 @@ public class CLIHelper {
 			}
 		}
 		System.out.println("\n----- END -----");
+		
+		// Read Currency map again.
+		HQApp.currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_Default_Accepted.txt");
+		
 	}
 
 	/**
