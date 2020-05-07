@@ -307,15 +307,15 @@ public class CLIHelper {
 				result.add(sites.get(index - 1));
 			}
 		} catch (IndexOutOfBoundsException e) {
-			logger.log(Level.SEVERE, "input exception! " + e);
+			logger.log(Level.WARNING, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return new HashSet<>();
 		} catch (InputMismatchException e) {
-			logger.log(Level.SEVERE, "input exception! " + e);
+			logger.log(Level.WARNING, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return new HashSet<>();
 		} catch (NumberFormatException e) {
-			logger.log(Level.SEVERE, "input exception! " + e);
+			logger.log(Level.WARNING, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return new HashSet<>();
 		}
@@ -346,7 +346,7 @@ public class CLIHelper {
 		try {
 			return Optional.of(DisplayOption.values()[input.nextInt() - 1]);
 		} catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
-			logger.log(Level.SEVERE, "Display Option exception! " + e);
+			logger.log(Level.WARNING, "Display Option exception! " + e);
 			System.out.println("Invalid option, try again!");
 			return Optional.empty();
 		} 
@@ -367,7 +367,7 @@ public class CLIHelper {
 		try {
 			return Optional.of(LocalDate.parse(input.next()));
 		} catch (DateTimeParseException e) {
-			logger.log(Level.SEVERE, "time input exception! " + e);
+			logger.log(Level.WARNING, "time input exception! " + e);
 			System.out.println("Invalid format, try again");
 			return Optional.empty();
 		}
@@ -393,12 +393,12 @@ public class CLIHelper {
 			int data = input.nextInt();
 			return Optional.of(Period.values()[data - 1]);
 		} catch (IndexOutOfBoundsException e) {
-			logger.log(Level.SEVERE, "input exception! " + e);
+			logger.log(Level.WARNING, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return Optional.empty();
 		} catch (InputMismatchException e) {
 			input.next();
-			logger.log(Level.SEVERE, "input exception! " + e);
+			logger.log(Level.WARNING, "input exception! " + e);
 			System.out.println("Wrong input.");
 			return Optional.empty();
 		}
