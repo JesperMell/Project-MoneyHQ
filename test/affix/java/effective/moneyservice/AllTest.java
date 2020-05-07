@@ -12,7 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 			TestJunitTransaction.class,
 			TestJUnitCurrency.class,
 			TestJUnitStatistic.class,
-			TestJUnitStatDay.class,
+			TestJUnitStatisticData.class,
 			TestJUnitCLIHelper.class
 		}
 		)
