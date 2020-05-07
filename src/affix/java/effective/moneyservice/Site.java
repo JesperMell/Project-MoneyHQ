@@ -67,6 +67,7 @@ public class Site {
 	@SuppressWarnings("unchecked")
 	public void readTransactions(LocalDate startDate, LocalDate endDate) throws ClassNotFoundException {
 		logger.info("Entering readTransactions method -->");
+		completedTransactions = new ArrayList<Transaction>();
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
 					new FileInputStream(String.format("Reports/Report_%s_%s.ser", siteName, startDate)))) {
