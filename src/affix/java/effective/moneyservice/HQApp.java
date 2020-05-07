@@ -1,8 +1,11 @@
 package affix.java.effective.moneyservice;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.ConsoleHandler;
@@ -34,7 +37,7 @@ public class HQApp {
 	 */
 	// create logger
 	private static Logger logger;
-	
+
 	/**
 	 * Variable holding the value for minimum ordered amount
 	 */
@@ -83,6 +86,7 @@ public class HQApp {
 		else {
 			currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_Default_Accepted.txt");
 		}
+		readSiteConfig();
 		logger.info("-------Configuration_Ends-------\n");
 		CLIapplication();
 	}
@@ -102,7 +106,13 @@ public class HQApp {
 			case 1:
 				System.out.println("Register exchange office");
 				newSite = createNewSite();
-				sites.putIfAbsent(newSite.getSiteName(), newSite);
+				if(sites.containsKey(newSite.getSiteName())) {
+					System.out.println("Site already registred!1");
+				}
+				else {
+					sites.putIfAbsent(newSite.getSiteName(), newSite);					
+					writeNewSiteToConfigFile(newSite.getSiteName());
+				}
 				break;
 			case 2:
 				if(sites.isEmpty()) {
@@ -149,7 +159,7 @@ public class HQApp {
 				ok = false;
 			}
 		}while(!ok);
-		
+
 		logger.info("Exiting HQmenu method <--");
 		return choice;
 	}
@@ -162,7 +172,7 @@ public class HQApp {
 		logger.info("Entering createNewSite method -->");
 		Site newSite = null;
 		boolean ok;
-		
+
 		do {
 			try {
 				ok = true;
@@ -176,11 +186,11 @@ public class HQApp {
 				ok = false;
 			}
 		} while (!ok);
-		
+
 		logger.info("Exiting createNewSite method <--");
 		return newSite;
 	}
-	
+
 	/**
 	 * Read the contents in a currency config file
 	 * and convert the contents to a map with currency code as key
@@ -235,5 +245,38 @@ public class HQApp {
 			return new Currency(currencyCode, exchangeRate/100);
 		else
 			return new Currency(currencyCode, exchangeRate);
+	}
+
+	/**
+	 * Method for reading a stored site from SiteConfiguration.txt file
+	 */
+	private static void readSiteConfig() {
+
+		try(BufferedReader br = new BufferedReader(new FileReader("SiteConfiguration.txt"))) {
+			while (br.ready()) {
+				String line = br.readLine().strip().toUpperCase();
+				Site readSite = new Site(line);
+
+				sites.putIfAbsent(readSite.getSiteName(), readSite);
+			}
+		}catch (IOException ioe) {
+			logger.log(Level.WARNING, "Could not read SiteConfig file properly! " + ioe);
+		}
+	}
+
+	/**
+	 * Method for writing a string to SiteConfiguration.txt to store a registered site
+	 * @param siteName - A string with the name of the newly registered site
+	 */
+	private static void writeNewSiteToConfigFile(String siteName) {
+
+		try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("SiteConfiguration.txt", true)))) {
+			if(sites.isEmpty())
+				pw.write(String.format("%s", siteName));
+			else
+				pw.write(String.format("\n%s", siteName));
+		}catch (IOException ioe) {
+			logger.log(Level.WARNING, "Could not write to SiteConfiguration file properly! " + ioe);
+		}
 	}
 }
