@@ -33,7 +33,7 @@ public class CLIHelper {
 	/**
 	 * Variable for keyboard input
 	 */
-	static Scanner input = new Scanner(System.in);
+	static Scanner input = new Scanner(System.in).useDelimiter(System.lineSeparator());
 
 	/**
 	 * The width of column when rendering output.
@@ -140,17 +140,23 @@ public class CLIHelper {
 		// Choose Display Option.
 		do {
 			display_option = readDisplayOption();
-			logger.info("Exiting readDisplayOption <--");
 			if(display_option.isPresent() && display_option.get() != DisplayOption.BACK) {
 				displayTable(sites, startDay.get(), periodOption.get(), currencies, display_option.get());
 			}
-		} while (display_option.get() != DisplayOption.BACK);
+			logger.info("Exiting readDisplayOption <--");
+		} while (continueShowDisplayOptions(display_option));
 		System.out.println("---");
 
 
 		// Read Currency map again.
 		HQApp.currencyMap = HQApp.readCurrencyConfigFile("ExchangeRates/CurrencyConfig_Default_Accepted.txt");
 		
+	}
+	
+	private static Boolean continueShowDisplayOptions(Optional<DisplayOption> opt) {
+		if(opt.isEmpty()) return true;
+		if(opt.get() != DisplayOption.BACK) return true;
+		return false;
 	}
 	
 	private static void displayTable(Set<Site> sites, LocalDate sDay, Period period, List<String> currencies, DisplayOption displayOpt) {
@@ -339,11 +345,11 @@ public class CLIHelper {
 
 		try {
 			return Optional.of(DisplayOption.values()[input.nextInt() - 1]);
-		} catch (IndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
 			logger.log(Level.SEVERE, "Display Option exception! " + e);
 			System.out.println("Invalid option, try again!");
 			return Optional.empty();
-		}
+		} 
 	}
 
 	/**
@@ -419,7 +425,7 @@ public class CLIHelper {
 			return new ArrayList<String>(HQApp.currencyMap.keySet());
 		}
 
-		for (String code : data.split(",")) {
+		for (String code : data.replace(" ", "").split(",")) {
 			if (HQApp.currencyMap.get(code) != null)
 				currencies.add(code);
 		}
