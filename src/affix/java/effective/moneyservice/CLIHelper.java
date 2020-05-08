@@ -231,7 +231,7 @@ public class CLIHelper {
 		// Show Statistics.
 		// For each day
 		if (displayOpt.equals(DisplayOption.STATISTICS)) {
-			
+			System.out.format("\n%s - %s", sDay, period);
 			// For total days
 			result.stream().collect(Collectors.groupingBy(StatisticData::getSite)).forEach(showAllSites(currencies));
 			
@@ -344,8 +344,9 @@ public class CLIHelper {
 		System.out.print("Enter your choice: ");
 
 		try {
-			return Optional.of(DisplayOption.values()[input.nextInt() - 1]);
-		} catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
+			String data = input.next();
+			return Optional.of(DisplayOption.values()[Integer.parseInt(data) - 1]);
+		} catch (ArrayIndexOutOfBoundsException | InputMismatchException | NumberFormatException e) {
 			logger.log(Level.SEVERE, "Display Option exception! " + e);
 			System.out.println("Invalid option, try again!");
 			return Optional.empty();
