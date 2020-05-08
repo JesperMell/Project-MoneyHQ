@@ -70,7 +70,7 @@ public class Site {
 		completedTransactions = new ArrayList<Transaction>();
 		do {
 			try (ObjectInputStream ois = new ObjectInputStream(
-					new FileInputStream(String.format("Reports/Report_%s_%s.ser", siteName, startDate)))) {
+					new FileInputStream(String.format("Reports/%s/Report_%s_%s.ser", siteName, siteName, startDate)))) {
 						((List<Transaction>) ois.readObject())
 							.forEach((o) -> { completedTransactions.add(o); });
         
