@@ -28,7 +28,12 @@ import java.util.stream.IntStream;
  */
 public class CLIHelper {
 	
-	static String[] displayTitles = {"Total Buy", "Total Sell", "Total Sell & Buy", "Profit"};
+	/**
+	 * The header used when rendering table.
+	 * These headers need to match the keys calculated when {@link StatisticData}
+	 * instances is created in displayTable function.
+	 */
+	static final String[] displayTitles = {"Total Buy", "Total Sell", "Total Sell & Buy", "Profit"};
 
 	/**
 	 * Variable for keyboard input
@@ -153,12 +158,33 @@ public class CLIHelper {
 		
 	}
 	
+	/**
+	 * Should the displayOption menu still be visible?
+	 * If the Optional is empty, then the input is probably inaccurate.
+	 * If the Optional isn't BACK, well, keep rendering the menu.
+	 * 
+	 * @param opt
+	 * @return True - Continue render displayOption menu
+	 *         False - Stop rendering the displayOption menu
+	 */
 	private static Boolean continueShowDisplayOptions(Optional<DisplayOption> opt) {
 		if(opt.isEmpty()) return true;
 		if(opt.get() != DisplayOption.BACK) return true;
 		return false;
 	}
 	
+	/**
+	 * displayTable is ultimate responsibility is to render statistics for site.
+	 * It does this by get the transactions from site, according to date range.
+	 * Summarize transactions calculated values, such as profit for a day.
+	 * Lastly render the output as a table of some sort.  
+	 * 
+	 * @param sites
+	 * @param sDay
+	 * @param period
+	 * @param currencies
+	 * @param displayOpt
+	 */
 	private static void displayTable(Set<Site> sites, LocalDate sDay, Period period, List<String> currencies, DisplayOption displayOpt) {
 		// Compute the endDay.
 		LocalDate endDay = createEndDay(period, sDay);
@@ -248,6 +274,13 @@ public class CLIHelper {
 				
 	}
 	
+	/**
+	 * BiConsumer to merge and render statistics.
+	 * Key is the site name, Value is a list of statistics data.
+	 * 
+	 * @param currencies
+	 * @return BiConsumer for presenting merged statistics.
+	 */
 	private static BiConsumer<String, List<StatisticData>> showAllSites(List<String> currencies) {
 		return (k1, v1) -> {
 			System.out.println(String.format("\n----- %s -----", k1));
@@ -482,11 +515,9 @@ public class CLIHelper {
 	/**
 	 * Generates a string representing a table. Adds spaces as padding, '|' as
 	 * separator and NewLine character for new line (\n).
-	 * 
-	 * @param list - List of Maps. The First key of each map will render as first in
-	 *             each column, which becomes a row. The second key will be the
-	 *             second line in each column, which is the second row, and so on.
-	 * @param prefix - String to prepend to column value.
+	 * @param data 
+	 * @param prefix 
+	 * @param currencies 
 	 * 
 	 * @return String
 	 */
@@ -520,8 +551,14 @@ public class CLIHelper {
  *
  */
 class StatisticData {
+	/**
+	 * The container for calculated values.
+	 */
 	private Map<String, Map<String, Integer>> data = new HashMap<>();
 	
+	/**
+	 * The site which the statistics belongs to.
+	 */
 	private String site;
 
 	/**
@@ -557,10 +594,19 @@ class StatisticData {
 		this.date = date;
 	}
 	
+	/**
+	 * @return the data
+	 */
 	public Map<String, Map<String, Integer>> getData() {
 		return data;
 	}
 	
+	/**
+	 * Merge data from another StatisticsData.
+	 * 
+	 * @param other
+	 * @return this
+	 */
 	public StatisticData mergeData(StatisticData other) {
 		other.getData().forEach((k1, v1) -> {
 			v1.forEach((k2, v2) -> {
@@ -571,6 +617,12 @@ class StatisticData {
 		return this;
 	}
 	
+	/**
+	 * Insert to data map.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	public void putToData(String key, Map<String, Integer> value) {
 		this.data.put(key, value);
 	}
