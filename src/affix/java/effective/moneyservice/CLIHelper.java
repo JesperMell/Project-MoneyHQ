@@ -257,7 +257,7 @@ public class CLIHelper {
 		// Show Statistics.
 		// For each day
 		if (displayOpt.equals(DisplayOption.STATISTICS)) {
-			System.out.format("\n%s - %s", sDay, period);
+			System.out.format("\nStart Day: %s --- Period: %s", sDay, period);
 			// For total days
 			result.stream().collect(Collectors.groupingBy(StatisticData::getSite)).forEach(showAllSites(currencies));
 			
