@@ -160,7 +160,7 @@ public class CLIHelper {
 	 * If the Optional is empty, then the input is probably inaccurate.
 	 * If the Optional isn't BACK, well, keep rendering the menu.
 	 * 
-	 * @param opt
+	 * @param opt - The option on what to display.
 	 * @return True - Continue render displayOption menu
 	 *         False - Stop rendering the displayOption menu
 	 */
@@ -237,7 +237,7 @@ public class CLIHelper {
 	 * BiConsumer to merge and render statistics.
 	 * Key is the site name, Value is a list of statistics data.
 	 * 
-	 * @param currencies
+	 * @param currencies - List of currencies to filer on.
 	 * @return BiConsumer for presenting merged statistics.
 	 */
 	private static BiConsumer<String, List<StatisticData>> displayStatData(List<String> currencies) {
