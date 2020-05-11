@@ -1,15 +1,12 @@
 package affix.java.effective.moneyservice;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -174,10 +171,12 @@ public class CLIHelper {
 	}
 	
 	/**
-	 * displayTable is ultimate responsibility is to render statistics for site.
-	 * It does this by get the transactions from site, according to date range.
-	 * Summarize transactions calculated values, such as profit for a day.
-	 * Lastly render the output as a table of some sort.  
+	 * displayTable is ultimate responsible to render statistics for site/sites.
+	 * First, it's asks a site instance to read all transactions according to the date range.
+	 * Second, create statistics instances which holds the reference to the imported transactions.
+	 * The third part is to use Statistics methods to compute cool values, and each value is stored
+	 * in a StatisticsData instance, which could contain profit for a day, or profit for a week. 
+	 * Lastly render the output as a table of some sort.
 	 * 
 	 * @param sites
 	 * @param sDay
@@ -189,59 +188,19 @@ public class CLIHelper {
 		// Compute the endDay.
 		LocalDate endDay = createEndDay(period, sDay);
 
-		// Create Statistics
-		List<Statistic> statistics = new ArrayList<>();
-
-		for (Site s : sites) {
-			try {
-				s.readTransactions(sDay, endDay);
-			} catch (ClassNotFoundException e1) {
-				logger.log(Level.SEVERE, "Site exception! " + e1);
-				System.out.println("Something went wrong!");
-			}
-			
-			if(s.getCompletedTransactions().isEmpty()) {
-				System.out.println(String.format("There was no transactions to read from %s.", s.getSiteName()));
-				continue;
-			}
-
-			try {
-				statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
-			} catch (IllegalArgumentException e) {
-				logger.log(Level.WARNING, "Statistics exception! " + e);
-				System.out.println(
-						String.format("%s does not have any transactions and won't be included", s.getSiteName()));
-			}
-		}
+		// Initialize Statistics
+		List<Statistic> statistics = Statistic.initializeFromSites(sites, sDay, endDay, currencies);
 
 		if (statistics.isEmpty()) {
 			System.out.println("No statistics were generated");
 			return;
 		}
 
-		// Create and set StatDay for each day.
+		// Create and set StatisticsData for each day.
 		// Fill them with corresponding values from statistics list.
-		List<StatisticData> result = new ArrayList<>();
+		List<StatisticData> result = StatisticData.initializeDataFromStatistics(statistics, sDay, endDay);
 
 		for (Statistic s : statistics) {
-			for (LocalDate ld = sDay; !ld.equals(endDay); ld = ld.plusDays(1)) {
-				if(ld.getDayOfWeek() == DayOfWeek.SATURDAY || ld.getDayOfWeek() == DayOfWeek.SUNDAY) {
-					continue;
-				}
-				try {
-				StatisticData temp = new StatisticData();
-				temp.setSite(s.getSiteName());
-				temp.putToData("Profit", s.getProfit(ld.toString()));
-				temp.putToData("Total Buy", s.getTotalAmountBuy(ld.toString()));
-				temp.putToData("Total Sell", s.getTotalAmountSell(ld.toString()));
-				temp.putToData("Total Sell & Buy", s.getTotalAmount(ld.toString()));
-
-				result.add(temp);
-				} catch(NullPointerException e) {
-					
-				}
-			}
-
 			// Show Transactions.
 			if (displayOpt.equals(DisplayOption.TRANSACTIONS)) {
 				System.out.println(String.format("----- Transactions for %s -----", s.getSiteName()));
@@ -259,7 +218,7 @@ public class CLIHelper {
 		if (displayOpt.equals(DisplayOption.STATISTICS)) {
 			System.out.format("\nStart Day: %s --- Period: %s", sDay, period);
 			// For total days
-			result.stream().collect(Collectors.groupingBy(StatisticData::getSite)).forEach(showAllSites(currencies));
+			result.stream().collect(Collectors.groupingBy(StatisticData::getSite)).forEach(displayStatData(currencies));
 			
 			// Display Statistics for all sites.
 			if (sites.size() > 1) {
@@ -267,7 +226,7 @@ public class CLIHelper {
 				
 				StatisticData total = result.stream().reduce(new StatisticData(), (t, elem) -> t.mergeData(elem));
 				System.out.println(headDisplayer(displayTitles));
-				System.out.println(rowDisplayer(total, "SEK", currencies));
+				System.out.println(rowDisplayer(total, "SEK", currencies, displayTitles));
 			}
 		}
 		System.out.println("\n----- END -----");
@@ -281,12 +240,12 @@ public class CLIHelper {
 	 * @param currencies
 	 * @return BiConsumer for presenting merged statistics.
 	 */
-	private static BiConsumer<String, List<StatisticData>> showAllSites(List<String> currencies) {
+	private static BiConsumer<String, List<StatisticData>> displayStatData(List<String> currencies) {
 		return (k1, v1) -> {
 			System.out.println(String.format("\n----- %s -----", k1));
 			StatisticData total = v1.stream().reduce(new StatisticData(), (t, elem) -> t.mergeData(elem));
 			System.out.println(headDisplayer(displayTitles));
-			System.out.println(rowDisplayer(total, "SEK", currencies));
+			System.out.println(rowDisplayer(total, "SEK", currencies, displayTitles));
 		};
 	}
 
@@ -518,22 +477,25 @@ public class CLIHelper {
 	 * @param data 
 	 * @param prefix 
 	 * @param currencies 
+	 * @param titles
 	 * 
 	 * @return String
 	 */
-	static String rowDisplayer(StatisticData data, String prefix, List<String> currencies) {
+	static String rowDisplayer(StatisticData data, String prefix, List<String> currencies, String[] titles) {
 		StringBuilder table = new StringBuilder();
 		Integer value;
 		// Get the currency list.
 		for(String currency : currencies) {
 			StringBuilder row = new StringBuilder();
-			for(String title : displayTitles) {
+			for(String title : titles) {
 				StringBuilder column = new StringBuilder();
 				value = data.getData().get(title).get(currency);
-				column.append(String.format("%s: %d %s", currency, value, prefix));
-				IntStream.range(0, DISPLAY_COLUMN_WIDTH - column.length()).forEachOrdered(n -> {
+				column.append(String.format("%s: ", currency));
+				String str = String.format("%d %s ", value, prefix);
+				IntStream.range(0, DISPLAY_COLUMN_WIDTH - (str.length() + column.length())).forEachOrdered(n -> {
 					column.append(" ");
 				});
+				column.append(str);
 				column.append("|");
 				row.append(column);
 			}
@@ -542,89 +504,4 @@ public class CLIHelper {
 
 		return table.toString();
 	}
-}
-
-/**
- * Container for data of transactions for a day.
- * 
- * @author jesper
- *
- */
-class StatisticData {
-	/**
-	 * The container for calculated values.
-	 */
-	private Map<String, Map<String, Integer>> data = new HashMap<>();
-	
-	/**
-	 * The site which the statistics belongs to.
-	 */
-	private String site;
-
-	/**
-	 * The date the transactions occurred (Transaction.getTimeStamp).
-	 */
-	private LocalDate date;
-
-	/**
-	 * @return the site
-	 */
-	public String getSite() {
-		return site;
-	}
-
-	/**
-	 * @param site the site to set
-	 */
-	public void setSite(String site) {
-		this.site = site;
-	}
-
-	/**
-	 * @return the date
-	 */
-	public LocalDate getDate() {
-		return date;
-	}
-
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	
-	/**
-	 * @return the data
-	 */
-	public Map<String, Map<String, Integer>> getData() {
-		return data;
-	}
-	
-	/**
-	 * Merge data from another StatisticsData.
-	 * 
-	 * @param other
-	 * @return this
-	 */
-	public StatisticData mergeData(StatisticData other) {
-		other.getData().forEach((k1, v1) -> {
-			v1.forEach((k2, v2) -> {
-					this.data.putIfAbsent(k1, new HashMap<String, Integer>());
-					this.data.get(k1).merge(k2, v2, Integer::sum);
-			});
-		});
-		return this;
-	}
-	
-	/**
-	 * Insert to data map.
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public void putToData(String key, Map<String, Integer> value) {
-		this.data.put(key, value);
-	}
-
 }

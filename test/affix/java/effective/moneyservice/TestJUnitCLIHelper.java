@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -24,7 +23,7 @@ public class TestJUnitCLIHelper {
 	/**
 	 * Should return a table with correct amount of padding and rows.
 	 */
-	@Deprecated
+	@Test
 	public void testRowDisplay1() {
 		StatisticData data = new StatisticData();
 		Map<String, Integer> d1 = new HashMap<>();
@@ -39,8 +38,8 @@ public class TestJUnitCLIHelper {
 		data.putToData("A", d1);
 		data.putToData("B", d2);
 		
-		String row = CLIHelper.rowDisplayer(data, "", Arrays.asList("A", "B"));
-		assertEquals(row, "A: 1                |A: 3                |\nB: 2                |B: 4                |\n");
+		String row = CLIHelper.rowDisplayer(data, "e", Arrays.asList("A", "B"), new String[] {"A", "B"});
+		assertEquals(row, "A:              1 e |A:              3 e |\nB:              2 e |B:              4 e |\n");
 	}
 
 }

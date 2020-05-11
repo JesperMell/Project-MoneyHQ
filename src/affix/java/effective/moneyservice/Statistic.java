@@ -1,10 +1,12 @@
 package affix.java.effective.moneyservice;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -457,5 +459,41 @@ public class Statistic {
 		logger.info("Avarage sell amount from all currency: " + resultMap);
 		logger.info("Exiting getAverageAmountSell method <--");
 		return resultMap;
+	}
+	
+	/**
+	 * Initialize statistics for each site, and fetch transactions.
+	 * 
+	 * 
+	 * @param sites
+	 * @param startDay
+	 * @param endDay
+	 * @param currencies
+	 * @return the statistics for each site.
+	 */
+	public static List<Statistic> initializeFromSites(Set<Site> sites, LocalDate startDay, LocalDate endDay, List<String> currencies) {
+		List<Statistic> statistics = new ArrayList<>();
+		for (Site s : sites) {
+			try {
+				s.readTransactions(startDay, endDay);
+			} catch (ClassNotFoundException e1) {
+				logger.log(Level.SEVERE, "Site exception! " + e1);
+				System.out.println("Something went wrong!");
+			}
+			
+			if(s.getCompletedTransactions().isEmpty()) {
+				System.out.println(String.format("There was no transactions to read from %s.", s.getSiteName()));
+				continue;
+			}
+
+			try {
+				statistics.add(new Statistic(s.getCompletedTransactions(), currencies, s.getSiteName()));
+			} catch (IllegalArgumentException e) {
+				logger.log(Level.WARNING, "Statistics exception! " + e);
+				System.out.println(
+						String.format("%s does not have any transactions and won't be included", s.getSiteName()));
+			}
+		}
+		return statistics;
 	}
 }
