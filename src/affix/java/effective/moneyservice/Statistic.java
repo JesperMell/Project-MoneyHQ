@@ -465,10 +465,10 @@ public class Statistic {
 	 * Initialize statistics for each site, and fetch transactions.
 	 * 
 	 * 
-	 * @param sites
-	 * @param startDay
-	 * @param endDay
-	 * @param currencies
+	 * @param sites - Site which to initialize new statistics from.
+	 * @param startDay - The start day.
+	 * @param endDay - The end day.
+	 * @param currencies - Decides which transactions for currencies to use.
 	 * @return the statistics for each site.
 	 */
 	public static List<Statistic> initializeFromSites(Set<Site> sites, LocalDate startDay, LocalDate endDay, List<String> currencies) {

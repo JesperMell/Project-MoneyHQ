@@ -178,11 +178,11 @@ public class CLIHelper {
 	 * in a StatisticsData instance, which could contain profit for a day, or profit for a week. 
 	 * Lastly render the output as a table of some sort.
 	 * 
-	 * @param sites
-	 * @param sDay
-	 * @param period
-	 * @param currencies
-	 * @param displayOpt
+	 * @param sites - List of sites to present
+	 * @param sDay - Start of the search range.
+	 * @param period - Which period to calculate data.
+	 * @param currencies - List of currencies to present.
+	 * @param displayOpt - What data to display.
 	 */
 	private static void displayTable(Set<Site> sites, LocalDate sDay, Period period, List<String> currencies, DisplayOption displayOpt) {
 		// Compute the endDay.
@@ -454,7 +454,7 @@ public class CLIHelper {
 	 * separator.
 	 * 
 	 * @param titles - A list of string to fill the column with.
-	 * @return String
+	 * @return String - formatted string.
 	 */
 
 	static String headDisplayer(String[] titles) {
@@ -474,12 +474,12 @@ public class CLIHelper {
 	/**
 	 * Generates a string representing a table. Adds spaces as padding, '|' as
 	 * separator and NewLine character for new line (\n).
-	 * @param data 
-	 * @param prefix 
-	 * @param currencies 
-	 * @param titles
+	 * @param data - The data to present.
+	 * @param prefix - Append this string to each row column.
+	 * @param currencies - Which currencies to display in data.
+	 * @param titles - Which Map from data.GetData() attribute.
 	 * 
-	 * @return String
+	 * @return String - formatted string.
 	 */
 	static String rowDisplayer(StatisticData data, String prefix, List<String> currencies, String[] titles) {
 		StringBuilder table = new StringBuilder();

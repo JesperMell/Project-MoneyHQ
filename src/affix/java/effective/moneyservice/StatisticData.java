@@ -67,8 +67,8 @@ class StatisticData {
 	/**
 	 * Merge data from another StatisticsData.
 	 * 
-	 * @param other
-	 * @return this
+	 * @param other - {@link StatisticData} to merge
+	 * @return this - this merged data.
 	 */
 	public StatisticData mergeData(StatisticData other) {
 		other.getData().forEach((k1, v1) -> {
@@ -83,8 +83,8 @@ class StatisticData {
 	/**
 	 * Insert to data map.
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key - Key for value.
+	 * @param value - Value for key.
 	 */
 	public void putToData(String key, Map<String, Integer> value) {
 		this.data.put(key, value);
@@ -94,9 +94,9 @@ class StatisticData {
 	 * Initialize {@link StatisticData} for each statistics
 	 * for each day within sDay and endDay.
 	 * 
-	 * @param statistics
-	 * @param sDay
-	 * @param endDay
+	 * @param statistics - The statistics to initialize data from.
+	 * @param sDay - The start day.
+	 * @param endDay - The end day-
 	 * @return list of {@link StatisticData} for each day for each {@link Statistic}.
 	 */
 	public static List<StatisticData> initializeDataFromStatistics(List<Statistic> statistics, LocalDate sDay, LocalDate endDay) {
